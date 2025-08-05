@@ -17,8 +17,13 @@ public class RsaController {
     }
 
     @PostMapping("/encrypt")
-    public ResponseEntity<String> encryptText(@RequestParam String plaintext, @RequestParam String publicKey) {
-        String encryptedText = rsaService.encrypt(plaintext, publicKey);
+    public ResponseEntity<String> encryptText(@RequestParam String plaintext, @RequestParam String publicKey, @RequestParam String modulus) {
+        String encryptedText = rsaService.encrypt(plaintext, new BigInteger(publicKey), new BigInteger(modulus));
         return new ResponseEntity<>(encryptedText, HttpStatus.OK);
+    }
+
+    @PostMapping("/decrypt")
+    public ResponseEntity<String> decryptText(@RequestParam String cipherText, @RequestParam String privateKey, @RequestParam String modulus) {
+        String decryptedText = rsaService.decrypt(cipherText, new BigInteger(privateKey), new BigInteger(modulus));
     }
 }
