@@ -15,4 +15,20 @@ public class User {
     private String password;
 
     private String publicKey;
+
+    public User(){
+
+    }
+
+    public Long getID() { return id; }
+    public void setID(Long inID) { id = inID; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String inUsername) { username = inUsername; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String inPassword) { password = inPassword; }
+
+    public String getPublicKey() { return publicKey; }
+    public void setPublicKey(String inPublicKey) { publicKey = inPublicKey; }
 }
