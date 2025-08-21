@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.example.rsawebapp.dto.RegisterRequest;
+import com.example.rsawebapp.dto.RegisterLoginRequest;
 import com.example.rsawebapp.models.User;
 import com.example.rsawebapp.repositories.UserRepository;
 
@@ -18,13 +18,13 @@ public class RegisterController {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/registerUser")
-    public String registerUser(@RequestBody RegisterRequest request) {
-        if (userRepository.findByUsername(request.getUsername()) != null) {
+    public String registerUser(@RequestBody RegisterLoginRequest registerRequest) {
+        if (userRepository.findByUsername(registerRequest.getUsername()) != null) {
             return "Username already exists";
         }
         User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         userRepository.save(user);
         return "User registered successfully";
     }

@@ -1,6 +1,6 @@
 package com.example.rsawebapp.dto;
 
-public class RegisterRequest {
+public class RegisterLoginRequest {
     private String username;
     private String password;
 
