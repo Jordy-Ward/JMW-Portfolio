@@ -14,6 +14,7 @@ public class User {
 
     private String password;
 
+    @Column(length = 2048)
     private String publicKey;
 
     public User(){
