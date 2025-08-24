@@ -24,6 +24,7 @@ public class RegisterController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/registerUser")

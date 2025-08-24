@@ -45,7 +45,7 @@ public class MessageController {
         return messageRepository.findBySender(authentication.getName());
     }
 
-    // Public key lookup endpoint
+    // Public key lookup
     @GetMapping("/public-key/{username}")
     public String getPublicKey(@PathVariable String username) {
         User user = userRepository.findByUsername(username);

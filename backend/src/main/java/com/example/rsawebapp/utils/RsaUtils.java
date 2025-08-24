@@ -1,6 +1,10 @@
 package com.example.rsawebapp.utils;
 import java.math.BigInteger;
+import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.util.Base64;
+
+import javax.crypto.Cipher;
 
 /**
  * Util class for generating RSA key pair, encrypting and decrypting
@@ -62,6 +66,13 @@ public class RsaUtils {
      */
     public static BigInteger decrypt(BigInteger cipher, BigInteger d, BigInteger n) {
         return cipher.modPow(d, n);
+    }
+
+    public static String encryptWithPublicKey(String plainText, PublicKey publicKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
 }
