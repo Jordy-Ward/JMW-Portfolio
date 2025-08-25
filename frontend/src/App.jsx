@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import LoginRegister from './LoginRegister';
+import Landing from './Landing';
+import MessagingApp from './MessagingApp';
 
 function App() {
     const [jwt, setJwt] = useState('');
     const [username, setUsername] = useState('');
+    const [showMessaging, setShowMessaging] = useState(false);
 
     if (!jwt) {
         return <LoginRegister onAuth={(token, user) => { setJwt(token); setUsername(user); }} />;
     }
 
-    return (
-        <div>
-            <h1>Welcome, {username}!</h1>
-            <p>Your JWT: <span style={{ wordBreak: 'break-all' }}>{jwt}</span></p>
-            {/* Add your messaging UI here */}
-        </div>
-    );
+    if (showMessaging) {
+        return <MessagingApp onBack={() => setShowMessaging(false)} username={username} jwt={jwt} />;
+    }
+
+    return <Landing username={username} jwt={jwt} onViewProject={() => setShowMessaging(true)} />;
 }
 
 export default App;
