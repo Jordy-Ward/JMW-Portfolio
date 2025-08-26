@@ -55,4 +55,20 @@ public class MessageController {
             throw new RuntimeException("User or public key not found");
         }
     }
+    // Get messages between logged in user and another user after a timestamp
+    @GetMapping("/with/{otherUser}")
+    public List<Message> getMessagesWithUserAfter(
+            @PathVariable String otherUser,
+            @RequestParam(required = false) Long after,
+            Authentication authentication) {
+        String currentUser = authentication.getName();
+        List<Message> all = messageRepository.findMessagesBetweenUsers(currentUser, otherUser);
+        if (after != null) {
+            return all.stream()
+                    .filter(m -> m.getTimeStamp() != null && java.sql.Timestamp.valueOf(m.getTimeStamp()).getTime() > after)
+                    .toList();
+        } else {
+            return all;
+        }
+    }
 }
