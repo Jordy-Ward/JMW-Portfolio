@@ -3,12 +3,13 @@
 This project is a web application that implements RSA encryption from scratch. It consists of a backend API built with Java and Spring Boot, and a frontend application built with React.
 
 
-## Backend
+## Still in the early stages
 
-The backend is responsible for handling RSA key generation and encryption. It exposes the following API endpoints:
+Started as a pure RSA encryption web based messaging app, it has grown into more of a public cv initiative and is in the process of being a highlight of my past and present projects.
 
-REST API Representation State Transfer Application Programming Interface. This is a way for your front end (what users see) and your back end (where the rsa magic occurs) to communicate using HTTP requests like GET, POST etc
-
-- `POST /api/rsa/generate-key-pair`: Generates a new RSA key pair.
-- `POST /api/rsa/encrypt`: Encrypts a given plaintext message using the public key.
+A top down over view of what it does/will contain
+- Registration and user credentials
+- Web based messaging app with support for custom RSA key encyrption and decryption
+- Java mini game called Bouncing Balls. Angry bird themed target shooter
+- Basic Financial Data modelling and prediction sheme
 
