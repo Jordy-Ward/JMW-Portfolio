@@ -10,6 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.sql.Timestamp;
 
 @RestController
 @RequestMapping("/api/rsa/messages")
@@ -55,6 +58,46 @@ public class MessageController {
             throw new RuntimeException("User or public key not found");
         }
     }
+    
+    // Lightweight endpoint to check for new messages since a timestamp
+    @GetMapping("/check-new")
+    public Map<String, Object> checkForNewMessages(
+            @RequestParam(required = false) Long since,
+            Authentication authentication) {
+        
+        String currentUser = authentication.getName();
+        Map<String, Object> response = new HashMap<>();
+        
+        if (since == null) {
+            // If no timestamp provided, return empty result
+            response.put("hasNewMessages", false);
+            response.put("newChatParticipants", List.of());
+            return response;
+        }
+        
+        try {
+            Timestamp sinceTimestamp = new Timestamp(since);
+            
+            // Get chat participants who have sent new messages since the timestamp
+            List<String> participantsWithNewMessages = messageRepository
+                .findChatParticipantsWithNewMessagesSince(currentUser, sinceTimestamp);
+            
+            boolean hasNewMessages = !participantsWithNewMessages.isEmpty();
+            
+            response.put("hasNewMessages", hasNewMessages);
+            response.put("newChatParticipants", participantsWithNewMessages);
+            response.put("timestamp", System.currentTimeMillis());
+            
+            return response;
+            
+        } catch (Exception e) {
+            response.put("hasNewMessages", false);
+            response.put("newChatParticipants", List.of());
+            response.put("error", "Invalid timestamp format");
+            return response;
+        }
+    }
+
     // Get messages between logged in user and another user after a timestamp
     @GetMapping("/with/{otherUser}")
     public List<Message> getMessagesWithUserAfter(
