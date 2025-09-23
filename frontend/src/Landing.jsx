@@ -44,7 +44,8 @@ export default function Landing({ onViewProject }) {
         <h3 className="text-3xl font-bold mb-8 text-purple-300">CV / Resume</h3>
         <div className="bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700">
           <ul className="list-disc list-inside text-lg text-gray-200 space-y-2">
-            <li>Bsc Computer Science Student, University of Stellenbosch (2023-present)</li>
+            <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch (2023-present)</li>
+            <li>Participated in the Prescient Investment Managements 2025 Hackathon</li>
             <li>Waiter at Dorp Bar, Stellenbosch (2023-2025)</li>
             {/* Add more experience/skills here */}
           </ul>
@@ -57,6 +58,7 @@ export default function Landing({ onViewProject }) {
         <h3 className="text-3xl font-bold mb-8 text-purple-300">Education</h3>
         <div className="bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700">
           <ul className="list-disc list-inside text-lg text-gray-200 space-y-2">
+            <li>Graduated from Glenwood House highschool (2020)</li>
             <li>BSc Computer Science with Applied Mathematics, University of Stellenbosch (2023–2025)</li>
             {/* Add more education here */}
           </ul>

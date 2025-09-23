@@ -9,7 +9,7 @@ public class SendMessageRequest {
     public void setRecipient(String inRecipient) { recipient = inRecipient; }
 
     public String getContent() { return content; }
-    public void getContent(String inContent) { content = inContent; }
+    public void setContent(String inContent) { content = inContent; }
 
     public boolean isEncrypted() { return encrypted; }
     public void setEncrypted(boolean inEncrpted) { encrypted = inEncrpted; }

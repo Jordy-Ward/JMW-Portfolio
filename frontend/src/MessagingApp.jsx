@@ -194,7 +194,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
   // Array of all messages for the currently selected chat
   const [allMessages, setAllMessages] = useState([]);
   
-  // Array of chat participants for the sidebar (each has just username)
+  // Array of chat participants for the sidebar (each has username and notification state)
   const [chats, setChats] = useState([]);
   
   // Whether the app is loading chats for the first time
@@ -202,25 +202,27 @@ export default function MessagingApp({ onBack, jwt, username }) {
   
   // Error message if loading chats fails
   const [error, setError] = useState('');
+  
+  // Track the last timestamp we checked for new messages
+  const [lastCheckTimestamp, setLastCheckTimestamp] = useState(Date.now());
+  
+  // Track server-side last seen data (loaded from backend)
+  const [lastSeenData, setLastSeenData] = useState({});
 
   /**
-   * EFFECT: Simple chat list loading
-   * This useEffect runs when the component mounts to build a simple chat participants list
-   * We only fetch this once on load, not on a polling interval for better performance
-   * 
-   * useEffect(() => { ... }, [dependencies]) runs when:
-   * - Component mounts (first time)
-   * - Any dependency in the array changes
+   * EFFECT: Simple chat list loading with server-side last seen tracking
+   * This useEffect runs when the component mounts to build a chat participants list
+   * and loads last seen data from the server
    */
   useEffect(() => {
     // Flag to prevent state updates if component unmounts during async operations
     let isMounted = true;
     
     /**
-     * Fetches unique chat participants (people you've messaged with)
+     * Fetches unique chat participants and server-side last seen data
      * This function runs only once when component loads
      */
-    async function fetchChatParticipants() {
+    async function fetchChatParticipantsAndLastSeen() {
       // Show loading spinner
       setLoading(true);
       
@@ -228,35 +230,63 @@ export default function MessagingApp({ onBack, jwt, username }) {
       setError('');
       
       try {
-        // Make two API calls in parallel to get inbox and sent messages
-        const inboxRes = await fetch('/api/rsa/messages/inbox', {
-          headers: { Authorization: `Bearer ${jwt}` }  // Include auth token
-        });
-        const sentRes = await fetch('/api/rsa/messages/sent', {
+        // Make API call to get chats with new message notifications
+        const res = await fetch('/api/rsa/messages/check-new-with-last-seen', {
           headers: { Authorization: `Bearer ${jwt}` }
         });
         
-        // Convert responses to JSON
-        const inbox = await inboxRes.json();
-        const sent = await sentRes.json();
+        if (!res.ok) throw new Error('Failed to load data');
+        
+        const data = await res.json();
         
         // If component was unmounted during fetch, don't update state
         if (!isMounted) return;
         
-        // Build simple chat participants list - just unique usernames
-        const participantsSet = new Set();
-        [...inbox, ...sent].forEach(msg => {
-          const other = msg.sender === username ? msg.recipient : msg.sender;
-          participantsSet.add(other);
-        });
+        if (data.success) {
+          // Store server-side last seen data
+          setLastSeenData(data.lastSeenData || {});
+          
+          // Build chat list from participants with new message flags
+          const chatList = (data.chatsWithNewMessages || []).map(chatUsername => ({
+            username: chatUsername,
+            hasNewMessage: true
+          }));
+          
+          // Also need to get all participants (not just those with new messages)
+          // Make additional calls to get complete participant list
+          const inboxRes = await fetch('/api/rsa/messages/inbox', {
+            headers: { Authorization: `Bearer ${jwt}` }
+          });
+          const sentRes = await fetch('/api/rsa/messages/sent', {
+            headers: { Authorization: `Bearer ${jwt}` }
+          });
+          
+          const inbox = await inboxRes.json();
+          const sent = await sentRes.json();
+          
+          if (!isMounted) return;
+          
+          // Build complete participants set
+          const participantsSet = new Set();
+          [...inbox, ...sent].forEach(msg => {
+            const other = msg.sender === username ? msg.recipient : msg.sender;
+            participantsSet.add(other);
+          });
+          
+          // Create complete chat list with notification states
+          const completeChatList = Array.from(participantsSet).map(chatUsername => {
+            const hasNewMessage = (data.chatsWithNewMessages || []).includes(chatUsername);
+            return {
+              username: chatUsername,
+              hasNewMessage: hasNewMessage
+            };
+          });
+          
+          setChats(completeChatList);
+        } else {
+          throw new Error(data.error || 'Failed to load chat data');
+        }
         
-        // Convert Set to array of simple chat objects (just username)
-        const chatList = Array.from(participantsSet).map(username => ({
-          username: username
-        }));
-        
-        // Update the chat list
-        setChats(chatList);
         setLoading(false);
       } catch (err) {
         if (!isMounted) return;
@@ -265,14 +295,72 @@ export default function MessagingApp({ onBack, jwt, username }) {
       }
     }
     
-    fetchChatParticipants();
+    fetchChatParticipantsAndLastSeen();
     
-    // No cleanup needed since we're not setting up any intervals
     return () => {
       isMounted = false;
     };
     // eslint-disable-next-line
   }, [jwt, username]);
+
+  /**
+   * EFFECT: Periodic check for new messages using server-side last seen tracking
+   * This runs every 10 seconds and uses server-side last seen data for accurate notifications
+   */
+  useEffect(() => {
+    // Don't start checking until we have an initial chat list
+    if (chats.length === 0) return;
+    
+    let isMounted = true;
+    
+    /**
+     * Check for new messages using server-side last seen data
+     */
+    async function checkForNewMessages() {
+      try {
+        const res = await fetch('/api/rsa/messages/check-new-with-last-seen', {
+          headers: { Authorization: `Bearer ${jwt}` }
+        });
+        
+        if (!res.ok) return; // Silently fail on errors
+        
+        const data = await res.json();
+        
+        if (!isMounted) return;
+        
+        if (data.success) {
+          // Update last seen data from server
+          setLastSeenData(data.lastSeenData || {});
+          
+          // Update chats with new message notifications
+          setChats(prev => {
+            return prev.map(chat => {
+              const hasNewMessage = (data.chatsWithNewMessages || []).includes(chat.username);
+              // Don't show notification for currently selected chat
+              return {
+                ...chat,
+                hasNewMessage: chat.username === selectedChat ? false : hasNewMessage
+              };
+            });
+          });
+        }
+        
+      } catch (err) {
+        // Silently handle errors to avoid disrupting user experience
+        console.error('Failed to check for new messages:', err);
+      }
+    }
+    
+    // Check immediately, then every 10 seconds
+    checkForNewMessages();
+    const interval = setInterval(checkForNewMessages, 10000);
+    
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line
+  }, [jwt, chats.length, selectedChat]);
 
   // Per-chat message polling with decryption
   useEffect(() => {
@@ -414,9 +502,9 @@ export default function MessagingApp({ onBack, jwt, username }) {
   const handleSelectUser = async (user) => {
     // Check if a chat with this user already exists in the sidebar
     if (!chats.some(c => c.username === user.username)) {
-      // If not, add a new chat entry to the sidebar (just username)
+      // If not, add a new chat entry to the sidebar
       setChats([
-        { username: user.username }, 
+        { username: user.username, hasNewMessage: false }, 
         ...chats
       ]);
     }
@@ -450,10 +538,39 @@ export default function MessagingApp({ onBack, jwt, username }) {
   /**
    * EVENT HANDLER: Handle selecting a chat from the sidebar list
    * This runs when user clicks on an existing chat in the sidebar
+   * Records the "last seen" timestamp on the server and clears notifications
    */
   const handleSelectChat = async (chat) => {
     // Set this chat as the active conversation
     setSelectedChat(chat.username);
+    
+    // Update last seen timestamp on server
+    try {
+      const res = await fetch(`/api/rsa/messages/last-seen/${chat.username}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${jwt}` }
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          // Update local last seen data
+          setLastSeenData(prev => ({
+            ...prev,
+            [chat.username]: data.timestamp
+          }));
+        }
+      }
+    } catch (err) {
+      console.error('Failed to update last seen:', err);
+    }
+    
+    // Clear the new message notification for this chat immediately
+    setChats(prev => prev.map(c => 
+      c.username === chat.username 
+        ? { ...c, hasNewMessage: false }
+        : c
+    ));
     
     // Clear any previous send errors
     setSendError('');
@@ -464,7 +581,9 @@ export default function MessagingApp({ onBack, jwt, username }) {
     
     // Fetch the recipient's public key for encryption feature
     try {
-      const res = await fetch(`/api/rsa/messages/public-key/${chat.username}`);
+      const res = await fetch(`/api/rsa/messages/public-key/${chat.username}`, {
+        headers: { Authorization: `Bearer ${jwt}` }
+      });
       
       if (res.ok) {
         const key = await res.text();
@@ -542,7 +661,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
       // Update the chat list to show this user if they're not already there
       setChats(prev => {
         if (!prev.some(c => c.username === selectedChat)) {
-          return [{ username: selectedChat }, ...prev];
+          return [{ username: selectedChat, hasNewMessage: false }, ...prev];
         }
         return prev;
       });
@@ -611,10 +730,10 @@ export default function MessagingApp({ onBack, jwt, username }) {
    */
   return (
     // Main container - full screen with dark gradient background
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black p-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black p-2">
       
       {/* Chat app container - rounded box with fixed height */}
-      <div className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-md h-[700px] bg-gray-900 rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-800 relative">
+      <div className="w-full max-w-xl h-[700px] bg-gray-900 rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-800 relative">
         
         {/* HEADER SECTION */}
         <header className="bg-gray-950 text-gray-100 px-4 py-3 flex items-center justify-between shadow-lg">
@@ -682,8 +801,8 @@ export default function MessagingApp({ onBack, jwt, username }) {
         </div>
         {/* Main layout */}
         <div className="flex-1 flex overflow-hidden">
-          {/* Chats list - simplified to just show participants */}
-          <aside className="w-28 sm:w-40 bg-gray-950 border-r border-gray-800 flex flex-col">
+          {/* Chats list - with notification support - fixed dimensions */}
+          <aside className="w-32 min-w-32 max-w-32 bg-gray-950 border-r border-gray-800 flex flex-col flex-shrink-0">
             <div className="p-2 font-bold text-purple-300 text-xs border-b border-gray-800 text-center">Chats</div>
             <div className="flex-1 overflow-y-auto">
               {/* Only show loading or empty message on first load */}
@@ -697,20 +816,39 @@ export default function MessagingApp({ onBack, jwt, username }) {
                 chats.map(chat => (
                   <div
                     key={chat.username}
-                    className={`p-3 cursor-pointer border-b border-gray-800 flex flex-col items-center gap-1 hover:bg-gray-800 ${selectedChat === chat.username ? 'bg-gray-800' : ''}`}
+                    className={`p-3 h-20 cursor-pointer border-b border-gray-800 flex flex-col items-center justify-center gap-1 hover:bg-gray-800 transition-all duration-300 ${
+                      selectedChat === chat.username 
+                        ? 'bg-gray-800' 
+                        : chat.hasNewMessage 
+                        ? 'bg-orange-900/30 hover:bg-orange-800/40 animate-pulse' 
+                        : ''
+                    }`}
                     onClick={() => handleSelectChat(chat)}
                   >
-                    <div className="w-8 h-8 rounded-full bg-purple-400 flex items-center justify-center font-bold text-gray-900">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-gray-900 transition-all duration-300 ${
+                      chat.hasNewMessage 
+                        ? 'bg-orange-400 animate-pulse shadow-lg shadow-orange-400/50' 
+                        : 'bg-purple-400'
+                    }`}>
                       {chat.username.charAt(0).toUpperCase()}
                     </div>
-                    <div className="text-xs text-gray-200 font-semibold truncate w-full text-center">{chat.username}</div>
+                    <div className={`text-xs font-semibold truncate w-full text-center transition-all duration-300 ${
+                      chat.hasNewMessage 
+                        ? 'text-orange-200' 
+                        : 'text-gray-200'
+                    }`}>
+                      {chat.username}
+                    </div>
+                    {chat.hasNewMessage && (
+                      <div className="w-2 h-2 bg-orange-400 rounded-full animate-ping"></div>
+                    )}
                   </div>
                 ))
               )}
             </div>
           </aside>
-          {/* Chat window */}
-          <main className="flex-1 flex flex-col bg-gray-800">
+          {/* Chat window - takes remaining space */}
+          <main className="flex-1 min-w-0 flex flex-col bg-gray-800">
             {/* Chat header */}
             {selectedChat ? (
               <>
