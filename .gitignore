@@ -1,0 +1,25 @@
+node_modules
+
+# Database
+postgres_data/
+*.sql.backup
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Spring Boot
+target/
+*.jar
+!**/src/main/**/target/
+!**/src/test/**/target/

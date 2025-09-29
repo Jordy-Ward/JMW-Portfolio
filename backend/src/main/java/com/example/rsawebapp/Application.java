@@ -17,9 +17,18 @@ public class Application {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
+                // Allow local development and deployed frontend
+                String[] allowedOrigins = {
+                    "http://localhost:3000",
+                    "https://*.vercel.app",
+                    "https://*.railway.app"
+                };
+                
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
-                        .allowedMethods("*");
+                        .allowedOrigins(allowedOrigins)
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }

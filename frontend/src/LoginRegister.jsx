@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 
 export default function LoginRegister({ onAuth }) {
     const [isLogin, setIsLogin] = useState(true);
@@ -13,11 +14,11 @@ export default function LoginRegister({ onAuth }) {
         setMessage('');
         try {
             if (isLogin) {
-                const res = await axios.post('http://localhost:8080/api/rsa/login', { username, password });
+                const res = await axios.post(`${API_BASE_URL}/api/rsa/login`, { username, password });
                 setMessage('Login successful!');
                 onAuth(res.data, username);
             } else {
-                const res = await axios.post('http://localhost:8080/api/rsa/register/registerUser', { username, password });
+                const res = await axios.post(`${API_BASE_URL}/api/rsa/register/registerUser`, { username, password });
                 setMessage(res.data.message);
                 if (res.data.privateKey) {
                     setPrivateKey(res.data.privateKey);

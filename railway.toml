@@ -1,0 +1,18 @@
+# Railway Deployment Configuration
+# This file tells Railway how to deploy your Spring Boot app
+
+[build]
+  builder = "heroku/buildpacks:20"
+
+[build.env]
+  BP_JVM_VERSION = "11"
+
+[deploy]
+  startCommand = "java -Dserver.port=$PORT -Dspring.profiles.active=cloud -jar target/*.jar"
+
+[env]
+  # These will be set in Railway dashboard
+  DATABASE_URL = ""
+  DATABASE_USERNAME = ""
+  DATABASE_PASSWORD = ""
+  FRONTEND_URL = ""
