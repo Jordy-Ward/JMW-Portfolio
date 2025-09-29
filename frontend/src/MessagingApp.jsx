@@ -3,6 +3,7 @@
 // useEffect: runs code when component mounts or dependencies change
 // useRef: creates a reference to a DOM element
 import React, { useState, useEffect, useRef } from 'react';
+import { API_BASE_URL } from './config';
 
 /**
  * CRYPTO HELPER FUNCTIONS
@@ -231,7 +232,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
       
       try {
         // Make API call to get chats with new message notifications
-        const res = await fetch('/api/rsa/messages/check-new-with-last-seen', {
+        const res = await fetch(`${API_BASE_URL}/api/rsa/messages/check-new-with-last-seen`, {
           headers: { Authorization: `Bearer ${jwt}` }
         });
         
@@ -254,10 +255,10 @@ export default function MessagingApp({ onBack, jwt, username }) {
           
           // Also need to get all participants (not just those with new messages)
           // Make additional calls to get complete participant list
-          const inboxRes = await fetch('/api/rsa/messages/inbox', {
+          const inboxRes = await fetch(`${API_BASE_URL}/api/rsa/messages/inbox`, {
             headers: { Authorization: `Bearer ${jwt}` }
           });
-          const sentRes = await fetch('/api/rsa/messages/sent', {
+          const sentRes = await fetch(`${API_BASE_URL}/api/rsa/messages/sent`, {
             headers: { Authorization: `Bearer ${jwt}` }
           });
           
@@ -318,7 +319,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
      */
     async function checkForNewMessages() {
       try {
-        const res = await fetch('/api/rsa/messages/check-new-with-last-seen', {
+        const res = await fetch(`${API_BASE_URL}/api/rsa/messages/check-new-with-last-seen`, {
           headers: { Authorization: `Bearer ${jwt}` }
         });
         
@@ -382,7 +383,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
     }
     async function fetchInitial() {
       try {
-        const res = await fetch(`/api/rsa/messages/with/${selectedChat}`, {
+        const res = await fetch(`${API_BASE_URL}/api/rsa/messages/with/${selectedChat}`, {
           headers: { Authorization: `Bearer ${jwt}` }
         });
         let msgs = await res.json();
@@ -439,7 +440,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
     
     try {
       // Fetch all users from the API
-      const res = await fetch('/api/rsa/users/getAllUsers', {
+      const res = await fetch(`${API_BASE_URL}/api/rsa/users/getAllUsers`, {
         headers: { Authorization: `Bearer ${jwt}` }
       });
       
@@ -521,7 +522,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
     
     // Fetch the recipient's public key for encryption feature
     try {
-      const res = await fetch(`/api/rsa/messages/public-key/${user.username}`, {
+      const res = await fetch(`${API_BASE_URL}/api/rsa/messages/public-key/${user.username}`, {
         headers: { Authorization: `Bearer ${jwt}`}  // Include auth token
       });
       
@@ -546,7 +547,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
     
     // Update last seen timestamp on server
     try {
-      const res = await fetch(`/api/rsa/messages/last-seen/${chat.username}`, {
+      const res = await fetch(`${API_BASE_URL}/api/rsa/messages/last-seen/${chat.username}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${jwt}` }
       });
@@ -581,7 +582,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
     
     // Fetch the recipient's public key for encryption feature
     try {
-      const res = await fetch(`/api/rsa/messages/public-key/${chat.username}`, {
+      const res = await fetch(`${API_BASE_URL}/api/rsa/messages/public-key/${chat.username}`, {
         headers: { Authorization: `Bearer ${jwt}` }
       });
       
@@ -673,7 +674,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
        * SEND MESSAGE TO SERVER
        * Make API call to actually send the message
        */
-      const res = await fetch('/api/rsa/messages/send', {
+      const res = await fetch(`${API_BASE_URL}/api/rsa/messages/send`, {
         method: 'POST',                                    // HTTP POST request
         headers: {
           'Content-Type': 'application/json',              // Sending JSON data
@@ -693,7 +694,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
        * SYNC WITH SERVER
        * Fetch the updated message list from server to ensure UI is in sync
        */
-      const res2 = await fetch(`/api/rsa/messages/with/${selectedChat}`, {
+      const res2 = await fetch(`${API_BASE_URL}/api/rsa/messages/with/${selectedChat}`, {
         headers: { Authorization: `Bearer ${jwt}` }
       });
       
