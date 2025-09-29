@@ -20,6 +20,9 @@ public class Application {
                 // Allow local development and deployed frontend
                 String[] allowedOrigins = {
                     "http://localhost:3000",
+                    "https://rsa-web-app.vercel.app",
+                    "https://rsa-web-app-git-main-jordy-wards-projects.vercel.app",
+                    "https://rsa-web-app-6pylfdeyh-jordy-wards-projects.vercel.app",
                     "https://*.vercel.app",
                     "https://*.railway.app"
                 };
