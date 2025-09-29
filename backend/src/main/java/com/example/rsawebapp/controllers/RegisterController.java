@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.rsawebapp.dto.RegisterLoginRequest;
 import com.example.rsawebapp.models.User;
@@ -25,7 +25,7 @@ public class RegisterController {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/registerUser")
     public Map<String, String> registerUser(@RequestBody RegisterLoginRequest registerRequest) throws Exception {
