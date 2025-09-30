@@ -1,6 +1,6 @@
-# RSA Web Application
+#JMW.Industries
 
-This project is a web application that implements RSA encryption from scratch. It consists of a backend API built with Java and Spring Boot, and a frontend application built with React.
+This project is a web application to highlight myself as an aspiring dev. It consists of a backend API built with Java and Spring Boot, and a frontend application built with React.
 
 
 ## Still in the early stages
