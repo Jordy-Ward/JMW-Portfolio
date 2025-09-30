@@ -118,7 +118,7 @@ export default function Landing({ onViewProject }) {
         <div className="bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700 flex flex-col items-center">
           <p className="mb-4 text-lg text-gray-200">Feel free to reach out to connect and or collaborate!</p>
           <div className="flex gap-6 mb-4">
-            <a href="mailto:your.jordyward041@gmail.com" className="text-purple-400 hover:text-purple-200 text-2xl"><i className="fas fa-envelope"></i> Email</a>
+            <a href="mailto:jordyward041@gmail.com" className="text-purple-400 hover:text-purple-200 text-2xl"><i className="fas fa-envelope"></i> Email</a>
             <a href="https://github.com/Jordy-Ward" className="text-purple-400 hover:text-purple-200 text-2xl" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i> GitHub</a>
           </div>
         </div>
