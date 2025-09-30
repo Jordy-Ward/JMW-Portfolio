@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from './config';
 
-export default function LoginRegister({ onAuth }) {
+export default function LoginRegister({ onAuth, onBack }) {
     const [isLogin, setIsLogin] = useState(true);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -32,6 +32,15 @@ export default function LoginRegister({ onAuth }) {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 via-purple-500 to-purple-900">
             <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center border border-purple-200">
+                {/* Back button */}
+                {onBack && (
+                    <button
+                        onClick={onBack}
+                        className="self-start mb-4 px-4 py-2 text-purple-700 hover:text-purple-900 hover:bg-purple-100 rounded-lg transition font-medium"
+                    >
+                        ← Back to Home
+                    </button>
+                )}
                 <h2 className="text-3xl font-extrabold text-purple-700 mb-6 tracking-wide drop-shadow">
                     {isLogin ? 'Login' : 'Register'}
                 </h2>
