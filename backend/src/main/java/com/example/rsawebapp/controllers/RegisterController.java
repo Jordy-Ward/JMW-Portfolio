@@ -4,8 +4,6 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -29,32 +27,32 @@ public class RegisterController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/registerUser")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegisterLoginRequest registerRequest) {
+    public Map<String, String> registerUser(@RequestBody RegisterLoginRequest registerRequest) {
         Map<String, String> response = new HashMap<>();
         
-        try {
-            // Validate input
-            if (registerRequest.getUsername() == null || registerRequest.getUsername().trim().isEmpty()) {
-                response.put("error", "Username is required");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
-            
-            if (registerRequest.getPassword() == null || registerRequest.getPassword().trim().isEmpty()) {
-                response.put("error", "Password is required");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
-            
-            if (registerRequest.getPassword().length() < 3) {
-                response.put("error", "Password must be at least 3 characters long");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
-            
-            // Check if username already exists
-            if (userRepository.findByUsername(registerRequest.getUsername().trim()) != null) {
-                response.put("error", "Username already exists");
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-            }
+        // Validate input
+        if (registerRequest.getUsername() == null || registerRequest.getUsername().trim().isEmpty()) {
+            response.put("error", "Username is required");
+            return response;
+        }
+        
+        if (registerRequest.getPassword() == null || registerRequest.getPassword().trim().isEmpty()) {
+            response.put("error", "Password is required");
+            return response;
+        }
+        
+        if (registerRequest.getPassword().length() < 3) {
+            response.put("error", "Password must be at least 3 characters long");
+            return response;
+        }
+        
+        // Check if username already exists
+        if (userRepository.findByUsername(registerRequest.getUsername().trim()) != null) {
+            response.put("error", "Username already exists");
+            return response;
+        }
 
+        try {
             // Generate RSA key pair
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
             keyGen.initialize(2048);
@@ -71,14 +69,14 @@ public class RegisterController {
 
             response.put("message", "User registered successfully. Save your private key securely.");
             response.put("privateKey", privateKey);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return response;
             
         } catch (NoSuchAlgorithmException e) {
             response.put("error", "Failed to generate RSA keys: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return response;
         } catch (Exception e) {
             response.put("error", "Registration failed: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return response;
         }
     }
     
