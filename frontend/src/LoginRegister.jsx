@@ -16,7 +16,7 @@ export default function LoginRegister({ onAuth, onBack }) {
             if (isLogin) {
                 const res = await axios.post(`${API_BASE_URL}/api/rsa/login`, { username, password });
                 setMessage('Login successful!');
-                onAuth(res.data, username);
+                onAuth(res.data.token, username);
             } else {
                 const res = await axios.post(`${API_BASE_URL}/api/rsa/register/registerUser`, { username, password });
                 setMessage(res.data.message);
@@ -25,7 +25,7 @@ export default function LoginRegister({ onAuth, onBack }) {
                 }
             }
         } catch (err) {
-            setMessage('Error: ' + (err.response?.data?.message || err.message));
+            setMessage('Error: ' + (err.response?.data?.error || err.response?.data?.message || err.message));
         }
     };
 
