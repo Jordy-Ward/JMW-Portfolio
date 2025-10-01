@@ -3,11 +3,13 @@ package com.example.rsawebapp.utils;
 import io.jsonwebtoken.*;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtil {
-    private final String SECRET_KEY = "my_super_secret_key_zoink";
+    @Value("${JWT_SECRET:my_super_secret_key_zoink}")
+    private String SECRET_KEY;
 
     public String generateToken(String username) {
         return Jwts.builder()

@@ -210,6 +210,9 @@ export default function MessagingApp({ onBack, jwt, username }) {
   // Track server-side last seen data (loaded from backend)
   const [lastSeenData, setLastSeenData] = useState({});
 
+  // Track whether the mobile private key modal is open
+  const [showMobileKeyModal, setShowMobileKeyModal] = useState(false);
+
   /**
    * EFFECT: Simple chat list loading with server-side last seen tracking
    * This useEffect runs when the component mounts to build a chat participants list
@@ -731,23 +734,23 @@ export default function MessagingApp({ onBack, jwt, username }) {
    */
   return (
     // Main container - full screen with dark gradient background
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black p-2">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black p-1 sm:p-2">
       
-      {/* Chat app container - rounded box with fixed height */}
-      <div className="w-full max-w-xl h-[700px] bg-gray-900 rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-800 relative">
+      {/* Chat app container - responsive sizing */}
+      <div className="w-full max-w-xl h-screen sm:h-[700px] bg-gray-900 sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-800 relative">
         
         {/* HEADER SECTION */}
-        <header className="bg-gray-950 text-gray-100 px-4 py-3 flex items-center justify-between shadow-lg">
+        <header className="bg-gray-950 text-gray-100 px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between shadow-lg">
           {/* Left side - app title and user avatar */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* User avatar circle with first letter of username */}
-            <div className="w-9 h-9 rounded-full bg-purple-700 flex items-center justify-center font-bold text-lg">
+            <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-purple-700 flex items-center justify-center font-bold text-sm sm:text-lg">
               {username && username.charAt(0).toUpperCase()}
             </div>
-            <span className="text-lg font-semibold tracking-wide">RSA Messaging</span>
+            <span className="text-sm sm:text-lg font-semibold tracking-wide">RSA Messaging</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex flex-col items-end">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div className="hidden sm:flex flex-col items-end">
               <textarea
                 className="w-48 h-16 text-xs bg-gray-800 text-purple-200 border border-gray-700 rounded-lg p-2 mb-1 resize-none focus:outline-none focus:ring-2 focus:ring-purple-700"
                 placeholder="Paste your private key here..."
@@ -757,9 +760,16 @@ export default function MessagingApp({ onBack, jwt, username }) {
               />
               <span className="text-xs text-purple-300">Paste Private Key</span>
             </div>
+            {/* Mobile private key button */}
+            <button
+              onClick={() => setShowMobileKeyModal(true)}
+              className="sm:hidden px-2 py-1 bg-gray-700 text-purple-300 rounded-lg text-xs"
+            >
+              🔐
+            </button>
             <button
               onClick={onBack}
-              className="px-3 py-1 bg-gray-800 text-purple-300 rounded-lg font-semibold shadow hover:bg-gray-700 transition"
+              className="px-2 sm:px-3 py-1 bg-gray-800 text-purple-300 rounded-lg font-semibold shadow hover:bg-gray-700 transition text-sm"
             >
               Back
             </button>
@@ -767,16 +777,48 @@ export default function MessagingApp({ onBack, jwt, username }) {
         </header>
         {privateKeyError && <div className="text-xs text-red-400 text-center mt-1">{privateKeyError}</div>}
         {privateKeyObj && <div className="text-xs text-green-400 text-center mt-1">Private key loaded for decryption.</div>}
+        
+        {/* Mobile Private Key Modal */}
+        {showMobileKeyModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-gray-900 rounded-lg p-4 w-full max-w-sm">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-purple-300 font-semibold">Private Key</h3>
+                <button
+                  onClick={() => setShowMobileKeyModal(false)}
+                  className="text-gray-400 hover:text-white"
+                >
+                  ✕
+                </button>
+              </div>
+              <textarea
+                className="w-full h-32 text-xs bg-gray-800 text-purple-200 border border-gray-700 rounded-lg p-2 mb-2 resize-none focus:outline-none focus:ring-2 focus:ring-purple-700"
+                placeholder="Paste your private key here for message decryption..."
+                value={privateKeyPem}
+                onChange={handlePrivateKeyPaste}
+                spellCheck={false}
+              />
+              <button
+                onClick={() => setShowMobileKeyModal(false)}
+                className="w-full px-3 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-sm"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        )}
+        
         {/* Start New Chat */}
-        <div className="px-4 py-2 bg-gray-950 border-b border-gray-800 flex items-center gap-2 relative">
+        <div className="px-2 sm:px-4 py-2 bg-gray-950 border-b border-gray-800 flex items-center gap-2 relative">
           <button
-            className="flex items-center gap-2 px-3 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-lg font-medium shadow transition text-sm"
+            className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-lg font-medium shadow transition text-xs sm:text-sm"
             onClick={handleNewChat}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3 sm:w-4 sm:h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
-            New Chat
+            <span className="hidden sm:inline">New Chat</span>
+            <span className="sm:hidden">+</span>
           </button>
           {showUserDropdown && (
             <div ref={dropdownRef} className="absolute left-0 top-12 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-20 w-48 max-h-60 overflow-y-auto">
@@ -802,9 +844,9 @@ export default function MessagingApp({ onBack, jwt, username }) {
         </div>
         {/* Main layout */}
         <div className="flex-1 flex overflow-hidden">
-          {/* Chats list - with notification support - fixed dimensions */}
-          <aside className="w-32 min-w-32 max-w-32 bg-gray-950 border-r border-gray-800 flex flex-col flex-shrink-0">
-            <div className="p-2 font-bold text-purple-300 text-xs border-b border-gray-800 text-center">Chats</div>
+          {/* Chats list - with notification support - responsive dimensions */}
+          <aside className={`${selectedChat ? 'hidden sm:flex' : 'flex'} w-full sm:w-32 sm:min-w-32 sm:max-w-32 bg-gray-950 border-r border-gray-800 flex-col flex-shrink-0`}>
+            <div className="p-2 font-bold text-purple-300 text-xs sm:text-xs border-b border-gray-800 text-center">Chats</div>
             <div className="flex-1 overflow-y-auto">
               {/* Only show loading or empty message on first load */}
               {loading ? (
@@ -817,7 +859,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
                 chats.map(chat => (
                   <div
                     key={chat.username}
-                    className={`p-3 h-20 cursor-pointer border-b border-gray-800 flex flex-col items-center justify-center gap-1 hover:bg-gray-800 transition-all duration-300 ${
+                    className={`p-2 sm:p-3 h-16 sm:h-20 cursor-pointer border-b border-gray-800 flex sm:flex-col flex-row sm:items-center items-center justify-center sm:justify-center gap-2 sm:gap-1 hover:bg-gray-800 transition-all duration-300 ${
                       selectedChat === chat.username 
                         ? 'bg-gray-800' 
                         : chat.hasNewMessage 
@@ -826,14 +868,14 @@ export default function MessagingApp({ onBack, jwt, username }) {
                     }`}
                     onClick={() => handleSelectChat(chat)}
                   >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-gray-900 transition-all duration-300 ${
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-900 transition-all duration-300 text-xs sm:text-base ${
                       chat.hasNewMessage 
                         ? 'bg-orange-400 animate-pulse shadow-lg shadow-orange-400/50' 
                         : 'bg-purple-400'
                     }`}>
                       {chat.username.charAt(0).toUpperCase()}
                     </div>
-                    <div className={`text-xs font-semibold truncate w-full text-center transition-all duration-300 ${
+                    <div className={`text-xs sm:text-xs font-semibold truncate w-full sm:text-center text-left transition-all duration-300 ${
                       chat.hasNewMessage 
                         ? 'text-orange-200' 
                         : 'text-gray-200'
@@ -849,17 +891,23 @@ export default function MessagingApp({ onBack, jwt, username }) {
             </div>
           </aside>
           {/* Chat window - takes remaining space */}
-          <main className="flex-1 min-w-0 flex flex-col bg-gray-800">
+          <main className={`${selectedChat ? 'flex' : 'hidden sm:flex'} flex-1 min-w-0 flex-col bg-gray-800`}>
             {/* Chat header */}
             {selectedChat ? (
               <>
-                <div className="px-4 py-3 border-b border-gray-700 flex items-center gap-3 bg-gray-900 relative">
-                  <div className="w-8 h-8 rounded-full bg-purple-400 flex items-center justify-center font-bold text-gray-900">{selectedChat.charAt(0).toUpperCase()}</div>
+                <div className="px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-700 flex items-center gap-2 sm:gap-3 bg-gray-900 relative">
+                  <button
+                    className="sm:hidden w-8 h-8 flex items-center justify-center text-purple-300 hover:bg-gray-800 rounded"
+                    onClick={() => setSelectedChat(null)}
+                  >
+                    ←
+                  </button>
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-purple-400 flex items-center justify-center font-bold text-gray-900 text-xs sm:text-base">{selectedChat.charAt(0).toUpperCase()}</div>
                   <div>
-                    <div className="font-semibold text-purple-200 text-sm">{selectedChat}</div>
+                    <div className="font-semibold text-purple-200 text-sm sm:text-sm">{selectedChat}</div>
                   </div>
                   <button
-                    className="absolute right-4 top-1/2 -translate-y-1/2 px-2 py-1 text-xs bg-gray-800 text-gray-300 rounded hover:bg-gray-700"
+                    className="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 px-2 py-1 text-xs bg-gray-800 text-gray-300 rounded hover:bg-gray-700"
                     onClick={() => setSelectedChat(null)}
                   >
                     Close
@@ -901,17 +949,17 @@ export default function MessagingApp({ onBack, jwt, username }) {
                     })}
                 </div>
                 {/* Message input */}
-                <form className="flex items-center gap-2 p-3 border-t border-gray-700 bg-gray-900" onSubmit={handleSendMessage}>
+                <form className="flex items-center gap-1 sm:gap-2 p-2 sm:p-3 border-t border-gray-700 bg-gray-900" onSubmit={handleSendMessage}>
                   <input
                     type="text"
                     placeholder="Type a message..."
-                    className="flex-1 px-4 py-2 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-700 bg-gray-800 text-gray-100"
+                    className="flex-1 px-2 sm:px-4 py-2 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-700 bg-gray-800 text-gray-100 text-sm sm:text-base"
                     value={messageInput}
                     onChange={e => setMessageInput(e.target.value)}
                     disabled={sending}
                   />
                   {recipientPublicKey && (
-                    <label className="flex items-center gap-1 text-xs text-purple-300 cursor-pointer select-none">
+                    <label className="hidden sm:flex items-center gap-1 text-xs text-purple-300 cursor-pointer select-none">
                       <input
                         type="checkbox"
                         checked={encrypt}
@@ -924,11 +972,11 @@ export default function MessagingApp({ onBack, jwt, username }) {
                   )}
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-full font-bold shadow transition flex items-center gap-2"
+                    className="px-3 sm:px-5 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-full font-bold shadow transition flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
                     disabled={sending}
                   >
-                    Send
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-green-300"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                    <span className="hidden sm:inline">Send</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 sm:w-5 sm:h-5 text-green-300"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
                   </button>
                 </form>
                 {sendError && <div className="text-xs text-red-400 text-center mt-1">{sendError}</div>}
