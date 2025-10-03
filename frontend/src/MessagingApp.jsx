@@ -6,6 +6,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { API_BASE_URL } from './config';
 
 /**
+ * Lightweight utility to handle expired tokens
+ * Just checks if we get a 401 response and redirects to login
+ */
+const handleAuthError = (response) => {
+  if (response.status === 401 || response.status === 403) {
+    console.log('Token expired - redirecting to login');
+    localStorage.removeItem('jwt');
+    window.location.href = '/';
+    return true; // Indicates auth error was handled
+  }
+  return false; // No auth error
+};
+
+/**
  * CRYPTO HELPER FUNCTIONS
  * These functions handle RSA encryption/decryption using the browser's Web Crypto API
  */
@@ -236,7 +250,10 @@ export default function MessagingApp({ onBack, jwt, username }) {
           headers: { Authorization: `Bearer ${jwt}` }
         });
         
-        if (!res.ok) throw new Error('Failed to load data');
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error('Failed to load data');
+        }
         
         const data = await res.json();
         
@@ -440,12 +457,8 @@ export default function MessagingApp({ onBack, jwt, username }) {
       
       // Check if the response is successful
       if (!res.ok) {
-        if (res.status === 401) {
-          // Token expired or invalid, redirect to login
-          localStorage.removeItem('jwt');
-          window.location.href = '/';
-          return;
-        }
+        // Use the lightweight auth error handler
+        if (handleAuthError(res)) return;
         throw new Error(`HTTP error! status: ${res.status}`);
       }
       
@@ -693,8 +706,11 @@ export default function MessagingApp({ onBack, jwt, username }) {
         })
       });
       
-      // If server returns error, throw exception
-      if (!res.ok) throw new Error('Failed to send message');
+      // If server returns error, handle auth or throw exception
+      if (!res.ok) {
+        if (handleAuthError(res)) return;
+        throw new Error('Failed to send message');
+      }
 
       /**
        * SYNC WITH SERVER
