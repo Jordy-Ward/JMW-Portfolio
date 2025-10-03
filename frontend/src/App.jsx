@@ -45,7 +45,7 @@ function App() {
                 // If not logged in, show login page first
                 setShowLogin(true);
             }
-        }} 
+        }}
     />;
 }
 
