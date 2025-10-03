@@ -2,6 +2,8 @@ package com.example.rsawebapp.config;
 
 
 import com.example.rsawebapp.utils.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,13 +34,26 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
             String username = null;
             String jwt = null;
+            boolean tokenValid = false;
 
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
                 jwt = authorizationHeader.substring(7);
-                username = jwtUtil.extractUsername(jwt);
+                try {
+                    username = jwtUtil.extractUsername(jwt);
+                    tokenValid = true; // If we got here, token structure is valid
+                } catch (ExpiredJwtException e) {
+                    System.out.println("JWT Token has expired: " + e.getMessage());
+                    // Don't set username, so authentication will be null and request will be treated as unauthenticated
+                } catch (MalformedJwtException e) {
+                    System.out.println("JWT Token is malformed: " + e.getMessage());
+                    // Don't set username, so authentication will be null and request will be treated as unauthenticated
+                } catch (Exception e) {
+                    System.out.println("Unable to get JWT Token: " + e.getMessage());
+                    // Don't set username, so authentication will be null and request will be treated as unauthenticated
+                }
             }
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (username != null && tokenValid && SecurityContextHolder.getContext().getAuthentication() == null) {
                 if (jwtUtil.validateToken(jwt, username)) {
                     UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(username, null, java.util.Collections.emptyList());

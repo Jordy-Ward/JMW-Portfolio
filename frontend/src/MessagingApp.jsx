@@ -438,6 +438,17 @@ export default function MessagingApp({ onBack, jwt, username }) {
         headers: { Authorization: `Bearer ${jwt}` }
       });
       
+      // Check if the response is successful
+      if (!res.ok) {
+        if (res.status === 401) {
+          // Token expired or invalid, redirect to login
+          localStorage.removeItem('jwt');
+          window.location.href = '/';
+          return;
+        }
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       // Convert response to JSON to get array of user objects
       const users = await res.json();
       
@@ -448,6 +459,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
       setUserLoading(false);
     } catch (err) {
       // If fetch fails, show error message and hide loading
+      console.error('Failed to load users:', err);
       setUserError('Failed to load users.');
       setUserLoading(false);
     }

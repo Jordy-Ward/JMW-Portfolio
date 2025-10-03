@@ -25,12 +25,28 @@ public class JwtUtil {
     }
 
     public boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && isTokenExpired(token) == false);
+        try {
+            final String extractedUsername = extractUsername(token);
+            return (extractedUsername.equals(username) && !isTokenExpired(token));
+        } catch (ExpiredJwtException e) {
+            // Token is expired, so it's not valid
+            return false;
+        } catch (Exception e) {
+            // Any other JWT exception means the token is not valid
+            return false;
+        }
     }
 
     private boolean isTokenExpired(String token) {
-        Date expiration = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration();
-        return expiration.before(new Date());
+        try {
+            Date expiration = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration();
+            return expiration.before(new Date());
+        } catch (ExpiredJwtException e) {
+            // If token is expired, this method should return true
+            return true;
+        } catch (Exception e) {
+            // Any other exception means we can't determine expiration, treat as expired
+            return true;
+        }
     }
 }
