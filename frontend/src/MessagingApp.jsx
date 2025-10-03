@@ -204,11 +204,8 @@ export default function MessagingApp({ onBack, jwt, username }) {
   // Error message if loading chats fails
   const [error, setError] = useState('');
   
-  // Track the last timestamp we checked for new messages
-  const [lastCheckTimestamp, setLastCheckTimestamp] = useState(Date.now());
-  
   // Track server-side last seen data (loaded from backend)
-  const [lastSeenData, setLastSeenData] = useState({});
+  const [, setLastSeenData] = useState({});
 
   // Track whether the mobile private key modal is open
   const [showMobileKeyModal, setShowMobileKeyModal] = useState(false);
@@ -249,12 +246,6 @@ export default function MessagingApp({ onBack, jwt, username }) {
         if (data.success) {
           // Store server-side last seen data
           setLastSeenData(data.lastSeenData || {});
-          
-          // Build chat list from participants with new message flags
-          const chatList = (data.chatsWithNewMessages || []).map(chatUsername => ({
-            username: chatUsername,
-            hasNewMessage: true
-          }));
           
           // Also need to get all participants (not just those with new messages)
           // Make additional calls to get complete participant list
