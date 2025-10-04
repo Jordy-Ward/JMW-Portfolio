@@ -20,6 +20,38 @@ export default function Landing({ onViewProject }) {
       }, 800); // Delay to allow scroll to complete
     }
   };
+
+  // Function to handle CV download with mobile compatibility
+  const handleDownloadCV = () => {
+    // Detect if user is on mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPad detection
+
+    if (isMobile) {
+      // On mobile, open in new tab for better compatibility
+      window.open('/JordanWardCV.pdf', '_blank');
+    } else {
+      // On desktop, try download first, fallback to opening in new tab
+      try {
+        const link = document.createElement('a');
+        link.href = '/JordanWardCV.pdf';
+        link.download = 'Jordan_Ward_CV.pdf';
+        
+        // Test if download attribute is supported
+        if (link.download !== undefined) {
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          // Fallback to opening in new tab
+          window.open('/JordanWardCV.pdf', '_blank');
+        }
+      } catch (error) {
+        // Fallback to opening in new tab
+        window.open('/JordanWardCV.pdf', '_blank');
+      }
+    }
+  };
   // Photo carousel state - no longer needed for horizontal scroll
   
   // Add your photos here - replace with your actual image filenames
@@ -66,26 +98,108 @@ export default function Landing({ onViewProject }) {
       </section>
 
       {/* Projects */}
-      <section id="projects" className="py-16 px-4 max-w-5xl mx-auto">
+      <section id="projects" className="py-16 px-4 max-w-6xl mx-auto">
         <h3 className="text-3xl font-bold mb-8 text-purple-300">Projects</h3>
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Messaging Web App */}
-          <div className={`bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700 flex flex-col ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
-            <h4 className="text-2xl font-semibold mb-2 text-purple-200">RSA Messaging Web App</h4>
-            <p className="mb-4 text-gray-200">A secure messaging platform using RSA encryption, built with Java Spring Boot and React. Features user authentication, encrypted messaging, and a modern UI.</p>
-            <button
-              onClick={onViewProject}
-              className="mt-auto px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition shadow-md"
-            >
-              Try Live Demo →
-            </button>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* JMW Portfolio - Main Project */}
+          <div className={`bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700 flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
+            <h4 className="text-xl font-semibold mb-2 text-purple-200">JMW Portfolio & RSA Messaging App</h4>
+            <p className="mb-4 text-gray-200 text-sm flex-grow">A student portfolio 
+              featuring this responsive website and a secure RSA messaging service. Built with React frontend, Java Spring Boot backend, PostgreSQL database, and deployed on Railway. 
+              Includes JWT authentication, RSA encryption, and fun UI effects.</p>
+            <div className="flex flex-col gap-2 mt-auto">
+              <button
+                onClick={onViewProject}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition shadow-md"
+              >
+                Try RSA Messaging Demo →
+              </button>
+              <a 
+                href="https://github.com/Jordy-Ward/JMW-Portfolio" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-semibold transition shadow-md text-center"
+              >
+                View on GitHub
+              </a>
+            </div>
+            <div className="flex flex-wrap gap-1 mt-3">
+              <span className="px-2 py-1 bg-cyan-600 text-xs rounded">React</span>
+              <span className="px-2 py-1 bg-blue-600 text-xs rounded">Java</span>
+              <span className="px-2 py-1 bg-green-600 text-xs rounded">Spring Boot</span>
+              <span className="px-2 py-1 bg-yellow-600 text-xs rounded">JavaScript</span>
+              <span className="px-2 py-1 bg-red-600 text-xs rounded">PostgreSQL</span>
+              <span className="px-2 py-1 bg-purple-600 text-xs rounded">RSA Encryption</span>
+            </div>
           </div>
-          {/* Add more projects here */}
-          <div className={`bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700 flex flex-col ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
-            <h4 className="text-2xl font-semibold mb-2 text-purple-200">Bouncing Balls</h4>
-            <p className="mb-4 text-gray-200">Add bouncing balls here</p>
-            <a href="#projects" className="mt-auto text-purple-400 hover:underline">View Details</a>
+
+          {/* Bouncing Balls */}
+          <div className={`bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700 flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
+            <h4 className="text-xl font-semibold mb-2 text-purple-200">Bouncing Balls</h4>
+            <p className="mb-4 text-gray-200 text-sm flex-grow">An interactive 2D physics game involving shooting balls at targets. Uses fun, realistic physics animations.
+              Built with Java for educational and entertainment purposes.</p>
+            <div className="flex flex-col gap-2 mt-auto">
+              <a 
+                href="https://github.com/Jordy-Ward/bouncingBalls" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-semibold transition shadow-md text-center"
+              >
+                View on GitHub
+              </a>
+            </div>
+            <div className="flex flex-wrap gap-1 mt-3">
+              <span className="px-2 py-1 bg-orange-600 text-xs rounded">Java</span>
+              <span className="px-2 py-1 bg-purple-600 text-xs rounded">Physics</span>
+              <span className="px-2 py-1 bg-pink-600 text-xs rounded">Animation</span>
+            </div>
           </div>
+
+          {/* Financial Data Analysis */}
+          <div className={`bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700 flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
+            <h4 className="text-xl font-semibold mb-2 text-purple-200">Financial Data Analysis</h4>
+            <p className="mb-4 text-gray-200 text-sm flex-grow">Financial data analysis project using machine learning to extract meaningful insights from 
+              financial datasets. Includes data visualization and predictive modeling.</p>
+            <div className="flex flex-col gap-2 mt-auto">
+              <a 
+                href="https://github.com/Jordy-Ward/finData" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-semibold transition shadow-md text-center"
+              >
+                View on GitHub
+              </a>
+            </div>
+            <div className="flex flex-wrap gap-1 mt-3">
+              <span className="px-2 py-1 bg-blue-600 text-xs rounded">Python</span>
+              <span className="px-2 py-1 bg-orange-600 text-xs rounded">Jupyter</span>
+              <span className="px-2 py-1 bg-green-600 text-xs rounded">Data Analysis</span>
+              <span className="px-2 py-1 bg-red-600 text-xs rounded">Finance</span>
+            </div>
+          </div>
+
+          {/* Prescient Coding Challenge */}
+          <div className={`bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700 flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
+            <h4 className="text-xl font-semibold mb-2 text-purple-200">Prescient Coding Challenge 2025</h4>
+            <p className="mb-4 text-gray-200 text-sm flex-grow">One of two solutions presented by team DualBoot at the Prescient Investment Management coding challenge 2025.</p>
+            <div className="flex flex-col gap-2 mt-auto">
+              <a 
+                href="https://github.com/Jordy-Ward/prescient-coding-challenge-2025" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-semibold transition shadow-md text-center"
+              >
+                View on GitHub
+              </a>
+            </div>
+            <div className="flex flex-wrap gap-1 mt-3">
+              <span className="px-2 py-1 bg-blue-600 text-xs rounded">Python</span>
+              <span className="px-2 py-1 bg-orange-600 text-xs rounded">Jupyter</span>
+              <span className="px-2 py-1 bg-green-600 text-xs rounded">Data Analysis</span>
+              <span className="px-2 py-1 bg-yellow-600 text-xs rounded">Challenge</span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -112,12 +226,7 @@ export default function Landing({ onViewProject }) {
               View CV
             </button>
             <button 
-              onClick={() => {
-                const link = document.createElement('a');
-                link.href = '/JordanWardCV.pdf';
-                link.download = 'Jordan_Ward_CV.pdf';
-                link.click();
-              }}
+              onClick={handleDownloadCV}
               className="px-6 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-lg font-bold shadow transition flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
