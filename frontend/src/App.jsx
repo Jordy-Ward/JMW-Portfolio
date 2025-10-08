@@ -1,52 +1,50 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginRegister from './LoginRegister';
 import Landing from './Landing';
 import MessagingApp from './MessagingApp';
+import NewsApp from './NewsApp';
 
 function App() {
-    const [jwt, setJwt] = useState('');
-    const [username, setUsername] = useState('');
-    const [showMessaging, setShowMessaging] = useState(false);
-    const [showLogin, setShowLogin] = useState(false);
+    return (
+        // AuthProvider wraps entire app to provide auth state to all components
+        <AuthProvider>
+            {/* Router enables navigation between different pages/routes */}
+            <Router>
+                <Routes>
+                    {/* Main landing page route */}
+                    <Route path="/" element={<Landing />} />
+                    
+                    {/* Login/Register page route */}
+                    <Route path="/login" element={<LoginRegister />} />
+                    
+                    {/* Messaging app route - protected, requires authentication */}
+                    <Route path="/messaging" element={<ProtectedMessagingRoute />} />
 
-    // Show login/register page when user wants to use the messaging app
-    if (showLogin && !jwt) {
-        return <LoginRegister 
-            onAuth={(token, user) => { 
-                setJwt(token); 
-                setUsername(user); 
-                setShowMessaging(true); // Go directly to messaging after login
-            }} 
-            onBack={() => setShowLogin(false)} // Allow going back to landing
-        />;
+                    {/* News app route */}
+                    <Route path="/news" element={<NewsApp/>}/>
+                    
+                    {/* Fallback route - redirect any unknown paths to home */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </Router>
+        </AuthProvider>
+    );
+}
+
+// Protected route component for messaging app
+// Automatically redirects to login if user is not authenticated
+function ProtectedMessagingRoute() {
+    const { isAuthenticated } = useAuth();
+    
+    // If user is not authenticated, redirect to login
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
     }
-
-    // Show messaging app when authenticated and messaging is requested
-    if (jwt && showMessaging) {
-        return <MessagingApp 
-            onBack={() => {
-                setShowMessaging(false);
-                setShowLogin(false);
-            }} 
-            username={username} 
-            jwt={jwt} 
-        />;
-    }
-
-    // Show landing page by default (even if authenticated)
-    return <Landing 
-        username={username} 
-        jwt={jwt} 
-        onViewProject={() => {
-            if (jwt) {
-                // If already logged in, go directly to messaging
-                setShowMessaging(true);
-            } else {
-                // If not logged in, show login page first
-                setShowLogin(true);
-            }
-        }}
-    />;
+    
+    // If authenticated, show the messaging app
+    return <MessagingApp />;
 }
 
 export default App;
