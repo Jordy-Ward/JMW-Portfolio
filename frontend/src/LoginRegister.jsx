@@ -1,8 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 import axios from 'axios';
 import { API_BASE_URL } from './config';
 
-export default function LoginRegister({ onAuth, onBack }) {
+export default function LoginRegister() {
+    // Router navigation hook
+    const navigate = useNavigate();
+    const location = useLocation();
+    
+    // Auth context for login function
+    const { login } = useAuth();
+    
+    // Determine where to redirect after login
+    const from = location.state?.from?.pathname || '/';
+    
+    // Local component state (unchanged)
     const [isLogin, setIsLogin] = useState(true);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -16,7 +29,9 @@ export default function LoginRegister({ onAuth, onBack }) {
             if (isLogin) {
                 const res = await axios.post(`${API_BASE_URL}/api/rsa/login`, { username, password });
                 setMessage('Login successful!');
-                onAuth(res.data.token, username);
+                // Use auth context login and navigate back to where user came from
+                login(res.data.token, username);
+                navigate(from, { replace: true });
             } else {
                 const res = await axios.post(`${API_BASE_URL}/api/rsa/register/registerUser`, { username, password });
                 setMessage(res.data.message);
@@ -32,15 +47,13 @@ export default function LoginRegister({ onAuth, onBack }) {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 via-purple-500 to-purple-900">
             <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center border border-purple-200">
-                {/* Back button */}
-                {onBack && (
-                    <button
-                        onClick={onBack}
-                        className="self-start mb-4 px-4 py-2 text-purple-700 hover:text-purple-900 hover:bg-purple-100 rounded-lg transition font-medium"
-                    >
-                        ← Back to Home
-                    </button>
-                )}
+                {/* Back button - now uses router navigation */}
+                <button
+                    onClick={() => navigate('/')}  // Navigate back to landing page
+                    className="self-start mb-4 px-4 py-2 text-purple-700 hover:text-purple-900 hover:bg-purple-100 rounded-lg transition font-medium"
+                >
+                    ← Back to Home
+                </button>
                 <h2 className="text-3xl font-extrabold text-purple-700 mb-6 tracking-wide drop-shadow">
                     {isLogin ? 'Login' : 'Register'}
                 </h2>

@@ -31,7 +31,7 @@ export default function Header({ username, jwt, onViewMessaging, onViewNews, onL
       description: 'Read up on what interests you',
       icon: '📰',
       onClick: onViewNews,
-      available: true
+      available: false  // Disabled during development
     }
   ];
 

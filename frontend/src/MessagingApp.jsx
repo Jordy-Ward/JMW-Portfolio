@@ -3,7 +3,10 @@
 // useEffect: runs code when component mounts or dependencies change
 // useRef: creates a reference to a DOM element
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 import { API_BASE_URL } from './config';
+import Header from './components/Header';
 
 /**
  * Lightweight utility to handle expired tokens
@@ -113,13 +116,44 @@ async function decryptMessage(ciphertext, privateKey) {
 }
 /**
  * MAIN MESSAGING APP COMPONENT
- * This is a React functional component that renders the messaging interface
- * Props (inputs from parent component):
- * - onBack: function to call when user clicks "Back" button
- * - jwt: authentication token for API calls
- * - username: the current logged-in user's username
+ * Now uses router navigation and auth context instead of props
+ * Automatically redirects to login if user is not authenticated
  */
-export default function MessagingApp({ onBack, jwt, username }) {
+export default function MessagingApp() {
+  // Router navigation hook
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Auth context for authentication state
+  const { jwt, username, isAuthenticated, logout } = useAuth();
+  
+  // Navigation functions for header
+  const handleViewMessaging = () => {
+    // Already on messaging, could scroll to top or refresh
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  const handleViewTechNews = () => {
+    navigate('/news');
+  };
+  
+  const scrollToSection = (sectionId) => {
+    // Navigate to landing page with section to scroll to
+    navigate('/', { state: { scrollTo: sectionId } });
+  };
+  
+  // Custom logout handler for messaging app - goes to landing page
+  const handleLogout = () => {
+    logout(); // Clear auth state
+    navigate('/'); // Navigate to landing page instead of login
+  };
+  
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
   
   /**
    * STATE VARIABLES
@@ -752,11 +786,22 @@ export default function MessagingApp({ onBack, jwt, username }) {
    * JSX is like HTML but can include JavaScript expressions in {}
    */
   return (
-    // Main container - full screen with dark gradient background
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black p-1 sm:p-2">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      {/* Main Header for navigation */}
+      <Header 
+        username={username}
+        jwt={jwt}
+        onViewMessaging={handleViewMessaging}
+        onViewNews={handleViewTechNews}
+        onLogout={handleLogout}
+        onNavigate={scrollToSection}
+        onGoHome={() => navigate('/')}
+        onLogin={() => navigate('/login', { state: { from: location } })}
+      />
       
-      {/* Chat app container - responsive sizing */}
-      <div className="w-full max-w-xl h-screen sm:h-[700px] bg-gray-900 sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-800 relative">
+      {/* Chat app container - with top padding for header */}
+      <div className="w-full flex items-center justify-center p-1 sm:p-2 pt-20 min-h-screen">
+        <div className="w-full max-w-xl h-[calc(100vh-6rem)] sm:h-[700px] bg-gray-900 sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-gray-800 relative">
         
         {/* HEADER SECTION */}
         <header className="bg-gray-950 text-gray-100 px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between shadow-lg">
@@ -787,7 +832,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
               🔐
             </button>
             <button
-              onClick={onBack}
+              onClick={() => navigate('/')}  // Navigate back to landing page
               className="px-2 sm:px-3 py-1 bg-gray-800 text-purple-300 rounded-lg font-semibold shadow hover:bg-gray-700 transition text-sm"
             >
               Back
@@ -1004,6 +1049,7 @@ export default function MessagingApp({ onBack, jwt, username }) {
               <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">Select a chat to start messaging.</div>
             )}
           </main>
+        </div>
         </div>
       </div>
     </div>

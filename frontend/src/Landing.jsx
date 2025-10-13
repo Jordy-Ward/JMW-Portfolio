@@ -1,7 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
+import Header from './components/Header';
 
-export default function Landing({ onViewProject }) {
+export default function Landing() {
+  // Router navigation hook for programmatic navigation
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Auth context for authentication state and functions
+  const { username, jwt, logout } = useAuth();
+  
+  // Local state for fire effects (unchanged from before)
   const [highlightedSection, setHighlightedSection] = useState('');
+
+  // Function to handle navigation to messaging app
+  // Checks authentication and routes accordingly
+  const handleViewMessaging = () => {
+    if (jwt) {
+      // User is authenticated - go directly to messaging
+      navigate('/messaging');
+    } else {
+      // User not authenticated - go to login page with intended destination
+      navigate('/login', { state: { from: { pathname: '/messaging' } } });
+    }
+  };
+
+  // Function to handle navigation to news app
+  const handleViewNews = () => {
+    navigate('/news');
+  };
 
   // Function to handle smooth scroll and animation
   const scrollToSection = (sectionId) => {
@@ -17,9 +45,23 @@ export default function Landing({ onViewProject }) {
         setHighlightedSection(sectionId);
         // Remove highlight after animation completes
         setTimeout(() => setHighlightedSection(''), 2500);
-      }, 800); // Delay to allow scroll to complete
+      }, 800);
     }
   };
+
+  // Effect to handle navigation from other pages with scroll intent
+  useEffect(() => {
+    const scrollTo = location.state?.scrollTo;
+    if (scrollTo) {
+      // Small delay to ensure page is fully rendered
+      setTimeout(() => {
+        scrollToSection(scrollTo);
+      }, 100);
+      
+      // Clear the state to prevent re-scrolling on re-renders
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate]);
 
   // Function to handle CV download with mobile compatibility
   const handleDownloadCV = () => {
@@ -75,45 +117,35 @@ export default function Landing({ onViewProject }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-gray-900 text-white font-sans">
-      {/* Hero/About Me */}
-      <section className="flex flex-col items-center justify-center py-20 px-4 text-center">
+      {/* Header */}
+                <Header 
+            username={username}
+            jwt={jwt}
+            onViewMessaging={handleViewMessaging}
+            onViewNews={handleViewNews}
+            onLogout={logout}
+            onNavigate={scrollToSection}
+            onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onLogin={() => navigate('/login', { state: { from: location } })}
+        />      {/* Hero/About Me */}
+      <section className="flex flex-col items-center justify-center py-12 px-4 text-center pt-32 pb-8">{/* Reduced py-20 to py-12 and added pb-8 */}
         <img src="/landingPagePortrait.JPG" alt="Profile" className="w-40 h-40 rounded-full border-4 border-purple-500 shadow-lg mb-6 object-cover" />
         <h1 className="text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg">Jordan Ward</h1>
         <h2 className="text-xl md:text-2xl font-semibold text-purple-300 mb-4">Aspiring Software Developer</h2>
         <p className="max-w-2xl text-lg md:text-xl text-gray-200 mb-6">Howzit! Feel free to check out my portfolio and experience!</p>
-        <div className="flex gap-4 justify-center">
-          <button 
-            onClick={() => scrollToSection('projects')}
-            className="px-6 py-2 bg-purple-700 hover:bg-purple-800 rounded-lg font-bold shadow transition"
-          >
-            View Projects
-          </button>
-          <button 
-            onClick={() => scrollToSection('contact')}
-            className="px-6 py-2 bg-white text-purple-800 hover:bg-purple-200 rounded-lg font-bold shadow transition"
-          >
-            Contact Me
-          </button>
-        </div>
       </section>
 
       {/* Projects */}
-      <section id="projects" className="py-16 px-4 max-w-6xl mx-auto">
+      <section id="projects" className="py-12 px-4 max-w-6xl mx-auto">{/* Reduced py-16 to py-12 */}
         <h3 className="text-3xl font-bold mb-8 text-purple-300">Projects</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* JMW Portfolio - Main Project */}
           <div className={`bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700 flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
             <h4 className="text-xl font-semibold mb-2 text-purple-200">JMW Portfolio & RSA Messaging App</h4>
             <p className="mb-4 text-gray-200 text-sm flex-grow">A student portfolio 
-              featuring this responsive website and a secure RSA messaging service. Built with React frontend, Java Spring Boot backend, PostgreSQL database, and deployed on Railway. 
+              featuring this website and a secure RSA messaging service. Built with React frontend, Java Spring Boot backend, PostgreSQL database, and deployed on Railway. 
               Includes JWT authentication, RSA encryption, and fun UI effects.</p>
             <div className="flex flex-col gap-2 mt-auto">
-              <button
-                onClick={onViewProject}
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition shadow-md"
-              >
-                Try RSA Messaging Demo →
-              </button>
               <a 
                 href="https://github.com/Jordy-Ward/JMW-Portfolio" 
                 target="_blank" 
@@ -215,10 +247,10 @@ export default function Landing({ onViewProject }) {
           </ul>
           
           <div className="flex gap-4 justify-center">
-            <button 
-              onClick={() => window.open('/JordanWardCV.pdf', '_blank')}
-              className="px-6 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-lg font-bold shadow transition flex items-center gap-2"
-            >
+                          <button
+                onClick={handleViewMessaging}  // Updated to use router navigation
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition shadow-md"
+              >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />

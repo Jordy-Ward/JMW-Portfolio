@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth scroll behavior with custom timing */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed header */
+}
+
+/* Try to slow down scroll behavior using CSS */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Alternative approach - target the scrolling element */
+* {
+  scroll-behavior: smooth !important;
+}
+
 /* Mobile optimizations */
 * {
   -webkit-tap-highlight-color: transparent;
