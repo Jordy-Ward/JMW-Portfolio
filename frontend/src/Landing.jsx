@@ -26,11 +26,6 @@ export default function Landing() {
     }
   };
 
-  // Function to handle navigation to news app
-  const handleViewNews = () => {
-    navigate('/news');
-  };
-
   // Function to handle smooth scroll and animation
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -118,11 +113,9 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-gray-900 text-white font-sans">
       {/* Header */}
-                <Header 
+        <Header 
             username={username}
             jwt={jwt}
-            onViewMessaging={handleViewMessaging}
-            onViewNews={handleViewNews}
             onLogout={logout}
             onNavigate={scrollToSection}
             onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -133,6 +126,131 @@ export default function Landing() {
         <h1 className="text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg">Jordan Ward</h1>
         <h2 className="text-xl md:text-2xl font-semibold text-purple-300 mb-4">Aspiring Software Developer</h2>
         <p className="max-w-2xl text-lg md:text-xl text-gray-200 mb-6">Howzit! Feel free to check out my portfolio and experience!</p>
+      </section>
+
+      {/* Apps Section - Cool Bubbles */}
+      <section id="apps" className="py-16 px-4 max-w-6xl mx-auto">
+        <h3 className="text-3xl font-bold mb-12 text-purple-300 text-center">Applications</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 justify-items-center">
+          {/* PingChat App */}
+          <div 
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-110 hover:-translate-y-2"
+            onClick={handleViewMessaging}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-purple-500/50 transition-all duration-300">
+              <div className="absolute inset-2 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center">
+                <span className="text-2xl md:text-3xl">💬</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+              <span className="text-sm font-semibold text-white group-hover:text-purple-300 transition-colors">PingChat</span>
+            </div>
+            {/* Hover effect overlay */}
+            <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+
+          {/* News App */}
+          <div 
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
+            title="Coming Soon!"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-60">
+              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
+                <span className="text-2xl md:text-3xl">📰</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+              <span className="text-sm font-semibold text-gray-400">News App</span>
+            </div>
+            {/* Coming Soon Badge */}
+            <div className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-bold animate-bounce">
+              Soon!
+            </div>
+          </div>
+
+          {/* App 3 - Coming Soon */}
+          <div 
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
+            title="Coming Soon!"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-40">
+              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
+                <span className="text-2xl md:text-3xl">🚀</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+              <span className="text-sm font-semibold text-gray-500">App 3</span>
+            </div>
+            {/* Coming Soon Badge */}
+            <div className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+              Soon
+            </div>
+          </div>
+
+          {/* App 4 - Coming Soon */}
+          <div 
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
+            title="Coming Soon!"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-40">
+              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
+                <span className="text-2xl md:text-3xl">⚡</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+              <span className="text-sm font-semibold text-gray-500">App 4</span>
+            </div>
+            {/* Coming Soon Badge */}
+            <div className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+              Soon
+            </div>
+          </div>
+
+          {/* App 5 - Coming Soon */}
+          <div 
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
+            title="Coming Soon!"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-40">
+              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
+                <span className="text-2xl md:text-3xl">🎯</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+              <span className="text-sm font-semibold text-gray-500">App 5</span>
+            </div>
+            {/* Coming Soon Badge */}
+            <div className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+              Soon
+            </div>
+          </div>
+
+          {/* App 6 - Coming Soon */}
+          <div 
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
+            title="Coming Soon!"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-40">
+              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
+                <span className="text-2xl md:text-3xl">🌟</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+              <span className="text-sm font-semibold text-gray-500">App 6</span>
+            </div>
+            {/* Coming Soon Badge */}
+            <div className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+              Soon
+            </div>
+          </div>
+        </div>
+        
+        {/* Small description */}
+        <div className="text-center mt-12">
+          <p className="text-gray-400 text-sm max-w-2xl mx-auto">
+            Click on the available apps. More to come...
+          </p>
+        </div>
       </section>
 
       {/* Projects */}
