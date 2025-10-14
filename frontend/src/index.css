@@ -48,7 +48,7 @@ html, body {
 }
 
 .animate-scroll {
-  animation: scroll 48s linear infinite;
+  animation: scroll 48s linear infinite; /* 12 photos × 4s each = 48s total */
 }
 
 /* Pause animation on hover */

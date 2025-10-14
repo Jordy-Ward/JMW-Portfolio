@@ -91,6 +91,16 @@ export default function Landing() {
   };
   // Photo carousel state - no longer needed for horizontal scroll
   
+  // Shuffle function to randomize array
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+  
   // Add your photos here - replace with your actual image filenames
   const photos = [
     "/family.jpeg",
@@ -107,8 +117,9 @@ export default function Landing() {
     "/luke2.jpeg"
   ];
   
-  // Duplicate photos array for seamless loop
-  const duplicatedPhotos = [...photos, ...photos];
+  // Randomize photos and duplicate for seamless loop
+  const [randomizedPhotos] = useState(() => shuffleArray(photos));
+  const duplicatedPhotos = [...randomizedPhotos, ...randomizedPhotos];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-gray-900 text-white font-sans">
@@ -129,7 +140,7 @@ export default function Landing() {
       </section>
 
       {/* Apps Section - Cool Bubbles */}
-      <section id="apps" className="py-16 px-4 max-w-6xl mx-auto">
+      <section id="apps" className="py-10 px-4 max-w-6xl mx-auto">
         <h3 className="text-3xl font-bold mb-12 text-purple-300 text-center">Applications</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 justify-items-center">
           {/* PingChat App */}
@@ -246,7 +257,7 @@ export default function Landing() {
         </div>
         
         {/* Small description */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-16">
           <p className="text-gray-400 text-sm max-w-2xl mx-auto">
             Click on the available apps. More to come...
           </p>
@@ -254,7 +265,7 @@ export default function Landing() {
       </section>
 
       {/* Projects */}
-      <section id="projects" className="py-12 px-4 max-w-6xl mx-auto">{/* Reduced py-16 to py-12 */}
+      <section id="projects" className="py-10 px-4 max-w-6xl mx-auto">{/* Reduced py-16 to py-12 */}
         <h3 className="text-3xl font-bold mb-8 text-purple-300">Projects</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* JMW Portfolio - Main Project */}
