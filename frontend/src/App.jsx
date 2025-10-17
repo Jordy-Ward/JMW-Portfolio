@@ -5,6 +5,7 @@ import LoginRegister from './LoginRegister';
 import Landing from './Landing';
 import MessagingApp from './MessagingApp';
 import NewsApp from './NewsApp';
+import BernoulliSiphon from './BernoulliSiphon';
 
 function App() {
     return (
@@ -24,6 +25,9 @@ function App() {
 
                     {/* News app route */}
                     <Route path="/news" element={<NewsApp/>}/>
+                    
+                    {/* Bernoulli Siphon demonstration route */}
+                    <Route path="/siphon" element={<BernoulliSiphon />} />
                     
                     {/* Fallback route - redirect any unknown paths to home */}
                     <Route path="*" element={<Navigate to="/" replace />} />
