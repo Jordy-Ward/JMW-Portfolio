@@ -195,63 +195,6 @@ export default function Landing() {
             {/* Hover effect overlay */}
             <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
-
-          {/* App 4 - Coming Soon */}
-          <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
-            title="Coming Soon!"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-40">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
-                <span className="text-2xl md:text-3xl">⚡</span>
-              </div>
-            </div>
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <span className="text-sm font-semibold text-gray-500">App 4</span>
-            </div>
-            {/* Coming Soon Badge */}
-            <div className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-              Soon
-            </div>
-          </div>
-
-          {/* App 5 - Coming Soon */}
-          <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
-            title="Coming Soon!"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-40">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
-                <span className="text-2xl md:text-3xl">🎯</span>
-              </div>
-            </div>
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <span className="text-sm font-semibold text-gray-500">App 5</span>
-            </div>
-            {/* Coming Soon Badge */}
-            <div className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-              Soon
-            </div>
-          </div>
-
-          {/* App 6 - Coming Soon */}
-          <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
-            title="Coming Soon!"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-40">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
-                <span className="text-2xl md:text-3xl">🌟</span>
-              </div>
-            </div>
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <span className="text-sm font-semibold text-gray-500">App 6</span>
-            </div>
-            {/* Coming Soon Badge */}
-            <div className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-              Soon
-            </div>
-          </div>
         </div>
         
         {/* Small description */}
