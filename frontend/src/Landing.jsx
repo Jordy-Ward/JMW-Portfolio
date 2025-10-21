@@ -158,6 +158,35 @@ export default function Landing() {
             </div>
             {/* Hover effect overlay */}
             <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Login prompt tooltip for non-authenticated users */}
+            {!username && (
+              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10 shadow-lg">
+                <div className="text-center">
+                  <div className="font-semibold">🔐 Login Required</div>
+                  <div className="text-gray-300">Register or login to start chatting</div>
+                </div>
+                {/* Tooltip arrow */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+              </div>
+            )}
+          </div>
+
+          {/* Siphon Demo App */}
+          <div 
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-110 hover:-translate-y-2"
+            onClick={() => navigate('/siphon')}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-blue-500/50 transition-all duration-300">
+              <div className="absolute inset-2 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-full flex items-center justify-center">
+                <span className="text-2xl md:text-3xl">🌊</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+              <span className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors">Siphon Demo</span>
+            </div>
+            {/* Hover effect overlay */}
+            <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
 
           {/* News App */}
@@ -178,24 +207,9 @@ export default function Landing() {
               Soon!
             </div>
           </div>
-
-          {/* Siphon Demo App */}
-          <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-110 hover:-translate-y-2"
-            onClick={() => navigate('/siphon')}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-blue-500/50 transition-all duration-300">
-              <div className="absolute inset-2 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-full flex items-center justify-center">
-                <span className="text-2xl md:text-3xl">🌊</span>
-              </div>
-            </div>
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <span className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors">Siphon Demo</span>
-            </div>
-            {/* Hover effect overlay */}
-            <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
         </div>
+
+        
         
         {/* Small description */}
         <div className="text-center mt-16">

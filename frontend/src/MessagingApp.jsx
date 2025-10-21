@@ -237,6 +237,41 @@ export default function MessagingApp() {
   };
 
   /**
+   * EFFECT: Auto-load saved private key from localStorage
+   * This runs when the component mounts or username changes
+   * Automatically loads and processes any saved private key for the current user
+   */
+  useEffect(() => {
+    if (!username) return;
+    
+    // Try to load saved private key for this user
+    const savedKey = localStorage.getItem(`privateKey_${username}`);
+    const keyCreatedAt = localStorage.getItem(`keyCreatedAt_${username}`);
+    
+    if (savedKey) {
+      // Auto-load the saved key
+      setPrivateKeyPem(savedKey);
+      
+      // Try to process it into a CryptoKey object
+      importPrivateKey(savedKey)
+        .then(key => {
+          setPrivateKeyObj(key);
+          setPrivateKeyError('');
+          
+          // Show success message with creation date if available
+          if (keyCreatedAt) {
+            const createdDate = new Date(parseInt(keyCreatedAt)).toLocaleDateString();
+            console.log(`Private key auto-loaded (created ${createdDate})`);
+          }
+        })
+        .catch(() => {
+          setPrivateKeyError('Saved key is invalid - please paste a new one.');
+          setPrivateKeyObj(null);
+        });
+    }
+  }, [username]); // Re-run when username changes
+
+  /**
    * MESSAGE STATE VARIABLES
    */
   
@@ -840,7 +875,14 @@ export default function MessagingApp() {
           </div>
         </header>
         {privateKeyError && <div className="text-xs text-red-400 text-center mt-1">{privateKeyError}</div>}
-        {privateKeyObj && <div className="text-xs text-green-400 text-center mt-1">Private key loaded for decryption.</div>}
+        {privateKeyObj && (
+          <div className="text-xs text-green-400 text-center mt-1">
+            🔑 Private key loaded for decryption
+            {localStorage.getItem(`privateKey_${username}`) === privateKeyPem && (
+              <span className="text-green-300"> (auto-loaded)</span>
+            )}
+          </div>
+        )}
         
         {/* Mobile Private Key Modal */}
         {showMobileKeyModal && (

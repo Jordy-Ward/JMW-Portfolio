@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 import axios from 'axios';
 import { API_BASE_URL } from './config';
+import KeyDeliveryModal from './components/KeyDeliveryModal';
 
 export default function LoginRegister() {
     // Router navigation hook
@@ -21,6 +22,7 @@ export default function LoginRegister() {
     const [password, setPassword] = useState('');
     const [privateKey, setPrivateKey] = useState('');
     const [message, setMessage] = useState('');
+    const [showKeyModal, setShowKeyModal] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,11 +39,34 @@ export default function LoginRegister() {
                 setMessage(res.data.message);
                 if (res.data.privateKey) {
                     setPrivateKey(res.data.privateKey);
+                    setShowKeyModal(true);
                 }
             }
         } catch (err) {
             setMessage('Error: ' + (err.response?.data?.error || err.response?.data?.message || err.message));
         }
+    };
+
+    // Handle saving key to localStorage
+    const handleSaveKeyLocally = (key) => {
+        try {
+            localStorage.setItem(`privateKey_${username}`, key);
+            localStorage.setItem(`keyCreatedAt_${username}`, Date.now().toString());
+            setMessage('Key saved to browser for automatic decryption!');
+        } catch (err) {
+            console.error('Failed to save key locally:', err);
+            setMessage('Warning: Could not save key to browser storage.');
+        }
+    };
+
+    // Handle closing the key modal
+    const handleCloseKeyModal = () => {
+        setShowKeyModal(false);
+        // Switch to login mode after successful registration and key backup
+        setIsLogin(true);
+        // Clear the registration form but keep username for convenience
+        setPassword('');
+        setMessage('Registration successful! Please log in with your new account.');
     };
 
     return (
@@ -92,13 +117,16 @@ export default function LoginRegister() {
                         {message}
                     </div>
                 )}
-                {privateKey && (
-                    <div className="mt-5 text-red-600 bg-red-50 border border-red-300 rounded-lg p-3 text-xs break-all">
-                        <strong>Save your private key securely!</strong>
-                        <pre className="whitespace-pre-wrap">{privateKey}</pre>
-                    </div>
-                )}
             </div>
+            
+            {/* Key Delivery Modal */}
+            <KeyDeliveryModal
+                isOpen={showKeyModal}
+                onClose={handleCloseKeyModal}
+                privateKey={privateKey}
+                username={username}
+                onSaveLocally={handleSaveKeyLocally}
+            />
         </div>
     );
 }
