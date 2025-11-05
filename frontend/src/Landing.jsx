@@ -214,7 +214,7 @@ export default function Landing() {
         {/* Small description */}
         <div className="text-center mt-16">
           <p className="text-gray-400 text-sm max-w-2xl mx-auto">
-            Click on the available apps. More to come...
+            More to come...
           </p>
         </div>
       </section>
@@ -325,7 +325,17 @@ export default function Landing() {
         <div className="bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700">
           <ul className="list-disc list-inside text-lg text-gray-200 space-y-2 mb-6">
             <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch (2021-present)</li>
-            <li>Participated in the Prescient Investment Management 2025 Hackathon</li>
+            <li>Participated in the {''}
+              <a 
+                href="https://www.prescient.co.za/"
+                target="_blank"
+                rel="nopener noreferer"
+                className="text-purple-300 hover:text-purple-100 underline decoration-purple-300 hover:decoration-purple-100 transition-colors"
+              >
+                Prescient Investment Management
+              </a>
+              {' '}2025 Hackathon</li>
+            <li>Work as a Teach Me2 (2025-present)</li>
             <li>Waiter at Dorp Bar, Stellenbosch (2023-2025)</li>
             <li>Lifeguard for Gwaing and Wilderness beaches (2018-2021)</li>
           </ul>
