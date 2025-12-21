@@ -22,77 +22,63 @@ export default function ArticleCard({ article, onClick }) {
         return timeAgo;
     };
 
-    const truncateTitle = (title, maxLength = 80) => {
-        if (!title) return 'No title available';
-        return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
-    };
-
-    const truncateExcerpt = (content, maxLength = 150) => {
-        if (!content) return 'No preview available...';
-        return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
-    };
-
     return (
         <div 
-            className="bg-white/10 rounded-xl p-6 mb-4 border border-purple-700 hover:bg-white/15 hover:border-purple-500 transition-all duration-200 cursor-pointer group"
+            className="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-700/50 hover:border-purple-500 transition-all duration-300 cursor-pointer group active:scale-[0.98] shadow-xl hover:shadow-2xl hover:shadow-purple-500/20"
             onClick={() => onClick(article)}
         >
-            <div className="flex gap-4">
-                {/* Article Image */}
-                <div className="flex-shrink-0">
-                    <img 
-                        src={article.image || article.urlToImage || '/api/placeholder/96/96'} 
-                        alt={article.title}
-                        className="w-24 h-24 rounded-lg object-cover bg-gray-700"
-                        onError={(e) => {
-                            e.target.src = '/api/placeholder/96/96';
-                        }}
-                    />
+            {/* Large Image */}
+            <div className="relative w-full h-64 sm:h-80 overflow-hidden bg-gray-800">
+                <img 
+                    src={article.image || article.urlToImage || 'https://picsum.photos/800/600'} 
+                    alt={article.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                        e.target.src = 'https://picsum.photos/800/600';
+                    }}
+                />
+                {/* Category Badge */}
+                <div className="absolute top-4 left-4">
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-lg ${getCategoryColor(article.category)}`}>
+                        {article.category || 'General'}
+                    </span>
+                </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-5 sm:p-6">
+                {/* Source and Time */}
+                <div className="flex items-center gap-2 text-gray-400 text-xs sm:text-sm mb-3">
+                    <span className="font-medium">{article.source?.name || article.source || 'Unknown'}</span>
+                    <span>•</span>
+                    <span>{formatTimeAgo(article.timeAgo || article.publishedAt)}</span>
                 </div>
 
-                {/* Article Content */}
-                <div className="flex-1 min-w-0">
-                    {/* Category and Meta Info */}
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <span className={`px-2 py-1 rounded text-xs font-medium text-white ${getCategoryColor(article.category)}`}>
-                            {article.category || 'General'}
-                        </span>
-                        <span className="text-gray-400 text-sm">
-                            {article.source?.name || article.source || 'Unknown Source'} • {formatTimeAgo(article.timeAgo || article.publishedAt)}
-                        </span>
-                    </div>
+                {/* Title */}
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 leading-tight group-hover:text-purple-300 transition-colors line-clamp-2">
+                    {article.title || 'No title available'}
+                </h3>
 
-                    {/* Title */}
-                    <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
-                        {truncateTitle(article.title)}
-                    </h3>
+                {/* Description */}
+                <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-4 line-clamp-2">
+                    {article.description || 'No preview available...'}
+                </p>
 
-                    {/* Excerpt */}
-                    <p className="text-gray-300 text-sm line-clamp-2 mb-3">
-                        {truncateExcerpt(article.description || article.content || article.excerpt)}
-                    </p>
-
-                    {/* Engagement Stats */}
+                {/* Stats and CTA */}
+                <div className="flex items-center justify-between pt-4 border-t border-purple-700/30">
                     <div className="flex items-center gap-4 text-gray-400 text-sm">
-                        <span className="flex items-center gap-1 hover:text-purple-300 transition-colors">
+                        <span className="flex items-center gap-1.5">
                             <span>👍</span>
-                            <span>{article.reactions || article.score || Math.floor(Math.random() * 200) + 50}</span>
+                            <span>{article.reactions || Math.floor(Math.random() * 200) + 50}</span>
                         </span>
-                        <span className="flex items-center gap-1 hover:text-purple-300 transition-colors">
+                        <span className="flex items-center gap-1.5">
                             <span>💬</span>
                             <span>{article.comments || Math.floor(Math.random() * 50) + 5}</span>
                         </span>
-                        <span className="flex items-center gap-1 hover:text-purple-300 transition-colors cursor-pointer">
-                            <span>📤</span>
-                            <span>Share</span>
-                        </span>
-                        {article.url && (
-                            <span className="flex items-center gap-1 hover:text-purple-300 transition-colors cursor-pointer ml-auto">
-                                <span>🔗</span>
-                                <span>Read More</span>
-                            </span>
-                        )}
                     </div>
+                    <span className="text-purple-400 font-semibold text-sm group-hover:text-purple-300 transition-colors">
+                        Read Article →
+                    </span>
                 </div>
             </div>
         </div>

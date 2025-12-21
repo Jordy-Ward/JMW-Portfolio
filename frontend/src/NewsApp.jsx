@@ -4,7 +4,6 @@ import { useAuth } from './contexts/AuthContext';
 import Header from './components/Header';
 import CategoryFilter from './components/CategoryFilter';
 import ArticleCard from './components/ArticleCard';
-import ArticleModal from './components/ArticleModal';
 import LoadingSpinner from './components/LoadingSpinner';
 
 export default function NewsApp() {
@@ -20,8 +19,6 @@ export default function NewsApp() {
     const [hasMore, setHasMore] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [page, setPage] = useState(1);
-    const [selectedArticle, setSelectedArticle] = useState(null);
-    const [modalOpen, setModalOpen] = useState(false);
     
     // Ref for infinite scroll
     const observerRef = useRef();
@@ -142,16 +139,11 @@ export default function NewsApp() {
         loadArticles(1, category, false);
     };
 
-    // Handle article click
+    // Handle article click - open article URL in new tab
     const handleArticleClick = (article) => {
-        setSelectedArticle(article);
-        setModalOpen(true);
-    };
-
-    // Close modal
-    const closeModal = () => {
-        setModalOpen(false);
-        setSelectedArticle(null);
+        if (article.url) {
+            window.open(article.url, '_blank', 'noopener,noreferrer');
+        }
     };
 
     // Infinite scroll observer
@@ -193,10 +185,11 @@ export default function NewsApp() {
             />
 
             {/* Main Content Area */}
-            <main className="max-w-6xl mx-auto p-6 pt-24"> {/* pt-24 for fixed header spacing */}
-                <div className="mb-6">
-                    <h2 className="text-3xl font-bold text-white mb-2">📰 Latest News</h2>
-                    <p className="text-gray-400">Stay updated with the latest technology trends, South African news, and feel-good stories</p>
+            <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-8">
+                {/* Header */}
+                <div className="mb-6 sm:mb-8 text-center">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">📰 Latest News</h2>
+                    <p className="text-sm sm:text-base text-gray-400">Swipe through the latest stories</p>
                 </div>
 
                 {/* Category Filter */}
@@ -205,8 +198,8 @@ export default function NewsApp() {
                     onCategoryChange={handleCategoryChange}
                 />
 
-                {/* Articles List */}
-                <div className="space-y-4">
+                {/* Articles Grid - Instagram/TikTok style */}
+                <div className="space-y-6 sm:space-y-8">
                     {articles.map((article, index) => {
                         // Attach ref to last article for infinite scroll
                         if (articles.length === index + 1) {
@@ -235,11 +228,11 @@ export default function NewsApp() {
 
                 {/* No More Articles */}
                 {!loading && !hasMore && articles.length > 0 && (
-                    <div className="text-center py-8">
-                        <p className="text-gray-400">🎉 You've reached the end! No more articles to load.</p>
+                    <div className="text-center py-8 sm:py-12">
+                        <p className="text-gray-400 text-sm sm:text-base mb-4">🎉 You've reached the end! No more articles to load.</p>
                         <button 
                             onClick={() => handleCategoryChange(selectedCategory)}
-                            className="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-colors"
+                            className="bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white px-6 py-2.5 rounded-lg transition-colors font-medium text-sm sm:text-base"
                         >
                             Refresh Articles
                         </button>
@@ -248,25 +241,18 @@ export default function NewsApp() {
 
                 {/* Empty State */}
                 {!loading && articles.length === 0 && (
-                    <div className="text-center py-12">
-                        <div className="text-6xl mb-4">📰</div>
-                        <h3 className="text-xl font-semibold text-white mb-2">No Articles Found</h3>
-                        <p className="text-gray-400 mb-4">Try selecting a different category or refresh the page.</p>
+                    <div className="text-center py-12 sm:py-16">
+                        <div className="text-5xl sm:text-6xl mb-4">📰</div>
+                        <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">No Articles Found</h3>
+                        <p className="text-gray-400 mb-6 text-sm sm:text-base px-4">Try selecting a different category or refresh the page.</p>
                         <button 
                             onClick={() => handleCategoryChange('all')}
-                            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-colors"
+                            className="bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white px-6 py-2.5 rounded-lg transition-colors font-medium text-sm sm:text-base"
                         >
                             View All News
                         </button>
                     </div>
                 )}
-
-                {/* Article Modal */}
-                <ArticleModal 
-                    article={selectedArticle}
-                    isOpen={modalOpen}
-                    onClose={closeModal}
-                />
             </main>
         </div>
     );

@@ -114,7 +114,14 @@ export default function Landing() {
     "/daddas.jpeg",
     "/flyingcat.jpeg",
     "/sleepytank.jpeg",
-    "/luke2.jpeg"
+    "/luke2.jpeg",
+    "/GeorgiaVicGrad.jpg",
+    "/gradFamBib.jpg",
+    "/GrayMichJoshGrad.jpg",
+    "/joGrad.jpg",
+    "/rhysSunset.jpg",
+    "/overheadPress.jpg",
+    "/gymPose.jpg"
   ];
   
   // Randomize photos and duplicate for seamless loop
@@ -191,21 +198,19 @@ export default function Landing() {
 
           {/* News App */}
           <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300"
-            title="Coming Soon!"
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-110 hover:-translate-y-2"
+            onClick={() => navigate('/news')}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg opacity-60">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-orange-500/50 transition-all duration-300">
+              <div className="absolute inset-2 bg-gradient-to-br from-orange-600 to-red-600 rounded-full flex items-center justify-center">
                 <span className="text-2xl md:text-3xl">📰</span>
               </div>
             </div>
             <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <span className="text-sm font-semibold text-gray-400">News App</span>
+              <span className="text-sm font-semibold text-white group-hover:text-orange-300 transition-colors">News App</span>
             </div>
-            {/* Coming Soon Badge */}
-            <div className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-bold animate-bounce">
-              Soon!
-            </div>
+            {/* Hover effect overlay */}
+            <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
         </div>
 
@@ -324,7 +329,8 @@ export default function Landing() {
         <h3 className="text-3xl font-bold mb-8 text-purple-300">CV / Resume</h3>
         <div className="bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700">
           <ul className="list-disc list-inside text-lg text-gray-200 space-y-2 mb-6">
-            <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch (2021-present)</li>
+            <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch</li>
+            <li>BSc Honours in Computer Science (2026-present)</li>
             <li>Participated in the {''}
               <a 
                 href="https://www.prescient.co.za/"
@@ -335,9 +341,9 @@ export default function Landing() {
                 Prescient Investment Management
               </a>
               {' '}2025 Hackathon</li>
-            <li>Work as a Teach Me2 (2025-present)</li>
+            <li>Tutor for Teach Me2 (2025-present)</li>
             <li>Waiter at Dorp Bar, Stellenbosch (2023-2025)</li>
-            <li>Lifeguard for Gwaing and Wilderness beaches (2018-2021)</li>
+            <li>Lifeguard for Gwaing and Wilderness beaches, Garden Route (2018-2021)</li>
           </ul>
           
           <div className="flex gap-4 justify-center">
@@ -370,7 +376,8 @@ export default function Landing() {
         <div className="bg-white/10 rounded-xl p-6 shadow-lg border border-purple-700">
           <ul className="list-disc list-inside text-lg text-gray-200 space-y-2">
             <li>Graduated from Glenwood House highschool (2020)</li>
-            <li>BSc Computer Science with Applied Mathematics, University of Stellenbosch (2021–2025)</li>
+            <li>Graduated from Stellenbosch University, BSc Computer Science and Applied Mathematics (2025)</li>
+            <li>Honours in Computer Science, Stellenbosch University (2026)</li>
             {/* Add more education here */}
           </ul>
         </div>

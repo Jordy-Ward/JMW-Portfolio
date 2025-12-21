@@ -43,12 +43,12 @@ html, body {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-280px * 12)); /* 12 photos × (256px width + 24px gap) */
+    transform: translateX(calc(-280px * 18)); /* 18 photos × (256px width + 24px gap) */
   }
 }
 
 .animate-scroll {
-  animation: scroll 48s linear infinite; /* 12 photos × 4s each = 48s total */
+  animation: scroll 72s linear infinite; /* 18 photos × 4s each = 76s total */
 }
 
 /* Pause animation on hover */
@@ -119,4 +119,15 @@ html, body {
 
 .fire-border {
   animation: fireBorder 2.5s ease-in-out;
+}
+
+/* Smooth horizontal scrolling for mobile */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
