@@ -1,10 +1,10 @@
 import React from 'react';
 
 const categories = [
-    { id: 'all', label: 'All News', emoji: '📰' },
-    { id: 'technology', label: 'Tech', emoji: '💻' },
-    { id: 'south-africa', label: 'South Africa', emoji: '🇿🇦' },
-    { id: 'feel-good', label: 'Feel Good', emoji: '😊' }
+    { id: 'all', label: 'All' },
+    { id: 'technology', label: 'Tech' },
+    { id: 'south-africa', label: 'South Africa' },
+    { id: 'feel-good', label: 'Feel Good' }
 ];
 
 export default function CategoryFilter({ selectedCategory, onCategoryChange }) {

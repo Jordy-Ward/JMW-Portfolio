@@ -188,8 +188,7 @@ export default function NewsApp() {
             <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-8">
                 {/* Header */}
                 <div className="mb-6 sm:mb-8 text-center">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">📰 Latest News</h2>
-                    <p className="text-sm sm:text-base text-gray-400">Swipe through the latest stories</p>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2"> News</h2>
                 </div>
 
                 {/* Category Filter */}
