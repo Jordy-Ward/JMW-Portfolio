@@ -114,7 +114,6 @@ export default function Landing() {
     "/daddas.jpeg",
     "/flyingcat.jpeg",
     "/sleepytank.jpeg",
-    "/luke2.jpeg",
     "/GeorgiaVicGrad.jpg",
     "/gradFamBib.jpg",
     "/GrayMichJoshGrad.jpg",

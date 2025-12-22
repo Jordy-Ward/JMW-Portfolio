@@ -1,8 +1,15 @@
 import React from 'react';
 
-export default function ArticleCard({ article, onClick }) {
+//template to display a news article. Like a card format
+
+//article card function that returns jsx html etc
+//recieves two props article and on click. article holds all the article data like image, descrip etc
+//on click is a function to call when the card is clicked
+//props are like function parameters
+export default function ArticleCard({ article, onClick }) { 
+
     const getCategoryColor = (category) => {
-        switch (category?.toLowerCase()) {
+        switch (category?.toLowerCase()) { //category? safely accesses the category. Wont crash if cat is null. Just return default
             case 'technology':
             case 'tech':
                 return 'bg-blue-600';
@@ -64,18 +71,8 @@ export default function ArticleCard({ article, onClick }) {
                     {article.description || 'No preview available...'}
                 </p>
 
-                {/* Stats and CTA */}
-                <div className="flex items-center justify-between pt-4 border-t border-purple-700/30">
-                    <div className="flex items-center gap-4 text-gray-400 text-sm">
-                        <span className="flex items-center gap-1.5">
-                            <span>👍</span>
-                            <span>{article.reactions || Math.floor(Math.random() * 200) + 50}</span>
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                            <span>💬</span>
-                            <span>{article.comments || Math.floor(Math.random() * 50) + 5}</span>
-                        </span>
-                    </div>
+                {/* Simple CTA */}
+                <div className="pt-4 border-t border-purple-700/30">
                     <span className="text-purple-400 font-semibold text-sm group-hover:text-purple-300 transition-colors">
                         Read Article →
                     </span>
