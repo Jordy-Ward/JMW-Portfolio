@@ -1,10 +1,11 @@
 import React from 'react';
 
 const categories = [
-    { id: 'all', label: 'All' },
-    { id: 'technology', label: 'Tech' },
-    { id: 'south-africa', label: 'South Africa' },
-    { id: 'feel-good', label: 'Feel Good' }
+    { id: 'tech', label: 'Tech' },
+    { id: 'politics', label: 'Politics' },
+    { id: 'war', label: 'War' },
+    { id: 'middle-east', label: 'Middle East' },
+    { id: 'sport', label: 'Sport' }
 ];
 
 export default function CategoryFilter({ selectedCategory, onCategoryChange }) {
