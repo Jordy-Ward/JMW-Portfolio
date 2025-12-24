@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+import { useTheme } from './contexts/ThemeContext';
 import Header from './components/Header';
 
 export default function Landing() {
@@ -10,6 +11,7 @@ export default function Landing() {
   
   // Auth context for authentication state and functions
   const { username, jwt, logout } = useAuth();
+  const { isDark } = useTheme();
   
   // Local state for fire effects (unchanged from before)
   const [highlightedSection, setHighlightedSection] = useState('');
@@ -128,7 +130,11 @@ export default function Landing() {
   const duplicatedPhotos = [...randomizedPhotos, ...randomizedPhotos];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white font-sans">
+    <div className={`min-h-screen font-sans transition-colors ${
+      isDark 
+        ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white' 
+        : 'bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900'
+    }`}>
       {/* Header */}
         <Header 
             username={username}
@@ -140,14 +146,22 @@ export default function Landing() {
         />      {/* Hero/About Me */}
       <section className="flex flex-col items-center justify-center py-12 px-4 text-center pt-32 pb-8">{/* Reduced py-20 to py-12 and added pb-8 */}
         <img src="/landingPagePortrait.JPG" alt="Profile" className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-6 object-cover" />
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg">Jordan Ward</h1>
-        <h2 className="text-xl md:text-2xl font-semibold text-gray-300 mb-4">Aspiring Software Developer</h2>
-        <p className="max-w-2xl text-lg md:text-xl text-gray-400 mb-6">Howzit! Feel free to check out my portfolio and experience!</p>
+        <h1 className={`text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>Jordan Ward</h1>
+        <h2 className={`text-xl md:text-2xl font-semibold mb-4 ${
+          isDark ? 'text-gray-300' : 'text-gray-600'
+        }`}>Aspiring Software Developer</h2>
+        <p className={`max-w-2xl text-lg md:text-xl mb-6 ${
+          isDark ? 'text-gray-400' : 'text-gray-500'
+        }`}>Howzit! Feel free to check out my portfolio and experience!</p>
       </section>
 
       {/* Apps Section - Cool Bubbles */}
       <section id="apps" className="py-10 px-4 max-w-6xl mx-auto">
-        <h3 className="text-3xl font-bold mb-12 text-white text-center">Applications</h3>
+        <h3 className={`text-3xl font-bold mb-12 text-center ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>Applications</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 justify-items-center">
           {/* PingChat App */}
           <div 
@@ -217,10 +231,16 @@ export default function Landing() {
 
       {/* Projects */}
       <section id="projects" className="py-10 px-4 max-w-6xl mx-auto">{/* Reduced py-16 to py-12 */}
-        <h3 className="text-3xl font-bold mb-8 text-white">Projects</h3>
+        <h3 className={`text-3xl font-bold mb-8 ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>Projects</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* JMW Portfolio - Main Project */}
-          <div className={`bg-white/5 rounded-xl p-6 shadow-lg border border-gray-800 hover:border-gray-700 transition-all flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
+          <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
+            isDark 
+              ? 'bg-white/5 border-gray-800 hover:border-gray-700' 
+              : 'bg-white border-gray-200 hover:border-gray-300'
+          }`}>
             <h4 className="text-xl font-semibold mb-2 text-white">JMW Portfolio & RSA Messaging App</h4>
             <p className="mb-4 text-gray-400 text-sm flex-grow">A student portfolio 
               featuring this website and a secure RSA messaging service. Built with React frontend, Java Spring Boot backend, PostgreSQL database, and deployed on Railway. 
@@ -246,7 +266,11 @@ export default function Landing() {
           </div>
 
           {/* Bouncing Balls */}
-          <div className={`bg-white/5 rounded-xl p-6 shadow-lg border border-gray-800 hover:border-gray-700 transition-all flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
+          <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
+            isDark 
+              ? 'bg-white/5 border-gray-800 hover:border-gray-700' 
+              : 'bg-white border-gray-200 hover:border-gray-300'
+          }`}>
             <h4 className="text-xl font-semibold mb-2 text-white">Bouncing Balls</h4>
             <p className="mb-4 text-gray-400 text-sm flex-grow">An interactive 2D physics game involving shooting balls at targets. Uses fun, realistic physics animations.
               Built with Java for educational and entertainment purposes.</p>
@@ -268,7 +292,11 @@ export default function Landing() {
           </div>
 
           {/* Financial Data Analysis */}
-          <div className={`bg-white/5 rounded-xl p-6 shadow-lg border border-gray-800 hover:border-gray-700 transition-all flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
+          <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
+            isDark 
+              ? 'bg-white/5 border-gray-800 hover:border-gray-700' 
+              : 'bg-white border-gray-200 hover:border-gray-300'
+          }`}>
             <h4 className="text-xl font-semibold mb-2 text-white">Financial Data Analysis</h4>
             <p className="mb-4 text-gray-400 text-sm flex-grow">Financial data analysis project using machine learning to extract meaningful insights from 
               financial datasets. Includes data visualization and predictive modeling.</p>
@@ -291,7 +319,11 @@ export default function Landing() {
           </div>
 
           {/* Prescient Coding Challenge */}
-          <div className={`bg-white/5 rounded-xl p-6 shadow-lg border border-gray-800 hover:border-gray-700 transition-all flex flex-col h-full ${highlightedSection === 'projects' ? 'fire-highlight fire-border' : ''}`}>
+          <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
+            isDark 
+              ? 'bg-white/5 border-gray-800 hover:border-gray-700' 
+              : 'bg-white border-gray-200 hover:border-gray-300'
+          }`}>
             <h4 className="text-xl font-semibold mb-2 text-white">Prescient Coding Challenge 2025</h4>
             <p className="mb-4 text-gray-400 text-sm flex-grow">One of two solutions presented by team DualBoot at the Prescient Investment Management coding challenge 2025.</p>
             <div className="flex flex-col gap-2 mt-auto">
