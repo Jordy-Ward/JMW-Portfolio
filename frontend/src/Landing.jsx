@@ -12,9 +12,6 @@ export default function Landing() {
   // Auth context for authentication state and functions
   const { username, jwt, logout } = useAuth();
   const { isDark } = useTheme();
-  
-  // Local state for fire effects (unchanged from before)
-  const [highlightedSection, setHighlightedSection] = useState('');
 
   // Function to handle navigation to messaging app
   // Checks authentication and routes accordingly
@@ -28,7 +25,7 @@ export default function Landing() {
     }
   };
 
-  // Function to handle smooth scroll and animation
+  // Function to handle smooth scroll
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -36,13 +33,6 @@ export default function Landing() {
         behavior: 'smooth',
         block: 'start'
       });
-      
-      // Trigger highlight animation after scroll
-      setTimeout(() => {
-        setHighlightedSection(sectionId);
-        // Remove highlight after animation completes
-        setTimeout(() => setHighlightedSection(''), 2500);
-      }, 800);
     }
   };
 
@@ -58,7 +48,7 @@ export default function Landing() {
       // Clear the state to prevent re-scrolling on re-renders
       navigate(location.pathname, { replace: true, state: {} });
     }
-  }, [location.state, navigate]);
+  }, [location.state, location.pathname, navigate]);
 
   // Function to handle CV download with mobile compatibility
   const handleDownloadCV = () => {
@@ -132,7 +122,7 @@ export default function Landing() {
   return (
     <div className={`min-h-screen font-sans transition-colors ${
       isDark 
-        ? 'bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white' 
+        ? 'bg-gradient-to-br from-gray-800 to-black text-white' 
         : 'bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900'
     }`}>
       {/* Header */}
@@ -151,10 +141,10 @@ export default function Landing() {
         }`}>Jordan Ward</h1>
         <h2 className={`text-xl md:text-2xl font-semibold mb-4 ${
           isDark ? 'text-gray-300' : 'text-gray-600'
-        }`}>Aspiring Software Developer</h2>
+        }`}>Tech Enthusiast</h2>
         <p className={`max-w-2xl text-lg md:text-xl mb-6 ${
           isDark ? 'text-gray-400' : 'text-gray-500'
-        }`}>Howzit! Feel free to check out my portfolio and experience!</p>
+        }`}>Feel free to check out my portfolio and experience!</p>
       </section>
 
       {/* Apps Section - Cool Bubbles */}
@@ -168,8 +158,8 @@ export default function Landing() {
             className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
             onClick={handleViewMessaging}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-700/50 transition-all duration-300">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-600/50 transition-all duration-300">
+              <div className="absolute inset-2 bg-gradient-to-br from-gray-700 to-gray-800 rounded-full flex items-center justify-center">
                 <span className="text-2xl md:text-3xl">💬</span>
               </div>
             </div>
@@ -197,8 +187,8 @@ export default function Landing() {
             className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
             onClick={() => navigate('/siphon')}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-600/50 transition-all duration-300">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-700 to-gray-800 rounded-full flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-500/50 transition-all duration-300">
+              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
                 <span className="text-2xl md:text-3xl">🌊</span>
               </div>
             </div>
@@ -214,8 +204,8 @@ export default function Landing() {
             className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
             onClick={() => navigate('/news')}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-500/50 transition-all duration-300">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-400/50 transition-all duration-300">
+              <div className="absolute inset-2 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full flex items-center justify-center">
                 <span className="text-2xl md:text-3xl">📰</span>
               </div>
             </div>
@@ -238,7 +228,7 @@ export default function Landing() {
           {/* JMW Portfolio - Main Project */}
           <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
             isDark 
-              ? 'bg-white/5 border-gray-800 hover:border-gray-700' 
+              ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
               : 'bg-white border-gray-200 hover:border-gray-300'
           }`}>
             <h4 className="text-xl font-semibold mb-2 text-white">JMW Portfolio & RSA Messaging App</h4>
@@ -250,7 +240,11 @@ export default function Landing() {
                 href="https://github.com/Jordy-Ward/JMW-Portfolio" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-semibold transition shadow-md text-center"
+                className={`px-6 py-2 rounded-lg font-semibold transition shadow-md text-center ${
+                  isDark 
+                    ? 'bg-gray-700 text-white hover:bg-gray-600' 
+                    : 'bg-white text-black hover:bg-gray-200'
+                }`}
               >
                 View on GitHub
               </a>
@@ -268,7 +262,7 @@ export default function Landing() {
           {/* Bouncing Balls */}
           <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
             isDark 
-              ? 'bg-white/5 border-gray-800 hover:border-gray-700' 
+              ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
               : 'bg-white border-gray-200 hover:border-gray-300'
           }`}>
             <h4 className="text-xl font-semibold mb-2 text-white">Bouncing Balls</h4>
@@ -279,7 +273,11 @@ export default function Landing() {
                 href="https://github.com/Jordy-Ward/bouncingBalls" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-semibold transition shadow-md text-center"
+                className={`px-6 py-2 rounded-lg font-semibold transition shadow-md text-center ${
+                  isDark 
+                    ? 'bg-gray-700 text-white hover:bg-gray-600' 
+                    : 'bg-white text-black hover:bg-gray-200'
+                }`}
               >
                 View on GitHub
               </a>
@@ -294,7 +292,7 @@ export default function Landing() {
           {/* Financial Data Analysis */}
           <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
             isDark 
-              ? 'bg-white/5 border-gray-800 hover:border-gray-700' 
+              ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
               : 'bg-white border-gray-200 hover:border-gray-300'
           }`}>
             <h4 className="text-xl font-semibold mb-2 text-white">Financial Data Analysis</h4>
@@ -305,7 +303,11 @@ export default function Landing() {
                 href="https://github.com/Jordy-Ward/finData" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-semibold transition shadow-md text-center"
+                className={`px-6 py-2 rounded-lg font-semibold transition shadow-md text-center ${
+                  isDark 
+                    ? 'bg-gray-700 text-white hover:bg-gray-600' 
+                    : 'bg-white text-black hover:bg-gray-200'
+                }`}
               >
                 View on GitHub
               </a>
@@ -321,7 +323,7 @@ export default function Landing() {
           {/* Prescient Coding Challenge */}
           <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
             isDark 
-              ? 'bg-white/5 border-gray-800 hover:border-gray-700' 
+              ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
               : 'bg-white border-gray-200 hover:border-gray-300'
           }`}>
             <h4 className="text-xl font-semibold mb-2 text-white">Prescient Coding Challenge 2025</h4>
@@ -331,7 +333,11 @@ export default function Landing() {
                 href="https://github.com/Jordy-Ward/prescient-coding-challenge-2025" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-semibold transition shadow-md text-center"
+                className={`px-6 py-2 rounded-lg font-semibold transition shadow-md text-center ${
+                  isDark 
+                    ? 'bg-gray-700 text-white hover:bg-gray-600' 
+                    : 'bg-white text-black hover:bg-gray-200'
+                }`}
               >
                 View on GitHub
               </a>
@@ -350,7 +356,7 @@ export default function Landing() {
       {/* CV/Resume */}
       <section id="cv" className="py-16 px-4 max-w-4xl mx-auto">
         <h3 className="text-3xl font-bold mb-8 text-white">CV / Resume</h3>
-        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-800 hover:border-gray-700 transition-all">
+        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-gray-600 transition-all">
           <ul className="list-disc list-inside text-lg text-gray-400 space-y-2 mb-6">
             <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch</li>
             <li>BSc Honours in Computer Science (2026-present)</li>
@@ -358,7 +364,7 @@ export default function Landing() {
               <a 
                 href="https://www.prescient.co.za/"
                 target="_blank"
-                rel="nopener noreferer"
+                rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white underline decoration-gray-500 hover:decoration-white transition-colors"
               >
                 Prescient Investment Management
@@ -372,7 +378,11 @@ export default function Landing() {
           <div className="flex gap-4 justify-center">
             <button
               onClick={() => window.open('/JordanWardCV.pdf', '_blank')}
-              className="px-6 py-2 bg-white text-black hover:bg-gray-200 rounded-lg font-semibold transition shadow-md flex items-center gap-2"
+              className={`px-6 py-2 rounded-lg font-semibold transition shadow-md flex items-center gap-2 ${
+                isDark 
+                  ? 'bg-gray-700 text-white hover:bg-gray-600' 
+                  : 'bg-white text-black hover:bg-gray-200'
+              }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -382,7 +392,11 @@ export default function Landing() {
             </button>
             <button 
               onClick={handleDownloadCV}
-              className="px-6 py-2 bg-white text-black hover:bg-gray-200 rounded-lg font-semibold transition shadow-md flex items-center gap-2"
+              className={`px-6 py-2 rounded-lg font-semibold transition shadow-md flex items-center gap-2 ${
+                isDark 
+                  ? 'bg-gray-700 text-white hover:bg-gray-600' 
+                  : 'bg-white text-black hover:bg-gray-200'
+              }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -396,7 +410,7 @@ export default function Landing() {
       {/* Education */}
       <section id="education" className="py-16 px-4 max-w-4xl mx-auto">
         <h3 className="text-3xl font-bold mb-8 text-white">Education</h3>
-        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-800 hover:border-gray-700 transition-all">
+        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-gray-600 transition-all">
           <ul className="list-disc list-inside text-lg text-gray-400 space-y-2">
             <li>Graduated from Glenwood House highschool (2020)</li>
             <li>Graduated from Stellenbosch University, BSc Computer Science and Applied Mathematics (2025)</li>
@@ -409,7 +423,7 @@ export default function Landing() {
       {/* Life Outside the Office */}
       <section id="life-outside" className="py-20 px-4 max-w-6xl mx-auto">
         <h3 className="text-3xl font-bold mb-8 text-white">More of me</h3>
-        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-800 overflow-hidden">
+        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 overflow-hidden">
           
           {/* Horizontal Scrolling Gallery */}
           <div className="relative overflow-hidden">
@@ -435,7 +449,7 @@ export default function Landing() {
       {/* Contact / Socials */}
       <section id="contact" className="py-16 px-4 max-w-4xl mx-auto">
         <h3 className="text-3xl font-bold mb-8 text-white">Contact details</h3>
-        <div className={`bg-white/5 rounded-xl p-6 shadow-lg border border-gray-800 hover:border-gray-700 transition-all flex flex-col items-center ${highlightedSection === 'contact' ? 'fire-highlight fire-border' : ''}`}>
+        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-gray-600 transition-all flex flex-col items-center">
           <p className="mb-4 text-lg text-gray-400">Feel free to reach out to connect and or collaborate!</p>
           <div className="flex gap-6 mb-4">
             <a href="mailto:jordyward041@gmail.com" className="text-gray-300 hover:text-white text-2xl"><i className="fas fa-envelope"></i> Email</a>
