@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+import { useTheme } from './contexts/ThemeContext';
 import Header from './components/Header';
 import CategoryFilter from './components/CategoryFilter';
 import ArticleCard from './components/ArticleCard';
@@ -17,6 +18,7 @@ export default function NewsApp() {
     
     // Auth context for header
     const { username, jwt, logout } = useAuth();
+    const { isDark } = useTheme();
     
     // Simple state - just articles, loading, and selected category
     const [articles, setArticles] = useState([]);
@@ -49,7 +51,7 @@ export default function NewsApp() {
     };
 
     //Fetch news from NewsAPI
-    const fetchNewsFromAPI = async (category, searchTerm = '') => {
+    const fetchNewsFromAPI = useCallback(async (category, searchTerm = '') => {
         setLoading(true);
         
         try {
@@ -103,7 +105,7 @@ export default function NewsApp() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [API_KEY]);
 
     // Handle category change - fetch new articles
     const handleCategoryChange = (category) => {
@@ -135,11 +137,15 @@ export default function NewsApp() {
     // Load articles when component first loads
     useEffect(() => {
         fetchNewsFromAPI(selectedCategory);
-    }, []);
+    }, [selectedCategory, fetchNewsFromAPI]);
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-gray-900 text-white">
+        <div className={`min-h-screen transition-colors ${
+            isDark
+                ? 'bg-gradient-to-br from-gray-800 to-black text-white'
+                : 'bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900'
+        }`}>
             <Header 
                 username={username}
                 jwt={jwt}
@@ -152,7 +158,9 @@ export default function NewsApp() {
 
             <main className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-8">
                 <div className="mb-6 sm:mb-8 text-center">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">News</h2>
+                    <h2 className={`text-2xl sm:text-3xl font-bold mb-2 ${
+                        isDark ? 'text-white' : 'text-gray-900'
+                    }`}>News</h2>
                 </div>
 
                 {/* Search Bar */}
@@ -162,11 +170,19 @@ export default function NewsApp() {
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full px-4 py-3 pr-24 rounded-lg bg-white/10 border-2 border-purple-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/15 transition-all"
+                            className={`w-full px-4 py-3 pr-24 rounded-lg border-2 focus:outline-none transition-all ${
+                                isDark
+                                    ? 'bg-white/10 border-gray-600 text-white placeholder-gray-400 focus:border-gray-500 focus:bg-white/15'
+                                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-gray-400'
+                            }`}
                         />
                         <button
                             type="submit"
-                            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-purple-600 hover:bg-purple-700 rounded-md font-medium transition-colors"
+                            className={`absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-md font-medium transition-colors ${
+                                isDark
+                                    ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                                    : 'bg-gray-900 hover:bg-gray-800 text-white'
+                            }`}
                         >
                             Search
                         </button>
@@ -178,7 +194,11 @@ export default function NewsApp() {
                                 setSearchQuery('');
                                 fetchNewsFromAPI(selectedCategory);
                             }}
-                            className="mt-2 text-sm text-purple-300 hover:text-purple-200 underline"
+                            className={`mt-2 text-sm underline ${
+                                isDark
+                                    ? 'text-gray-300 hover:text-white'
+                                    : 'text-gray-600 hover:text-gray-900'
+                            }`}
                         >
                             Clear search
                         </button>
@@ -207,7 +227,9 @@ export default function NewsApp() {
                                 ))
                             ) : (
                                 <div className="text-center py-12">
-                                    <p className="text-gray-400 text-lg">No articles found. Try a different search or category.</p>
+                                    <p className={`text-lg ${
+                                        isDark ? 'text-gray-400' : 'text-gray-600'
+                                    }`}>No articles found. Try a different search or category.</p>
                                 </div>
                             )}
                         </div>
@@ -217,7 +239,11 @@ export default function NewsApp() {
                             <div className="mt-8 flex justify-center">
                                 <button
                                     onClick={handleRefresh}
-                                    className="group px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+                                    className={`group px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 ${
+                                        isDark
+                                            ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                                            : 'bg-gray-900 hover:bg-gray-800 text-white'
+                                    }`}
                                 >
                                     <svg 
                                         className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" 

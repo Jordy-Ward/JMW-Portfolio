@@ -101,7 +101,6 @@ export default function Landing() {
     "/paintball.jpeg",
     "/georgia.jpeg",
     "/tank.jpeg",
-    "/helen.jpeg",
     "/luke.jpeg",
     "/daddas.jpeg",
     "/flyingcat.jpeg",
@@ -141,45 +140,47 @@ export default function Landing() {
         }`}>Jordan Ward</h1>
         <h2 className={`text-xl md:text-2xl font-semibold mb-4 ${
           isDark ? 'text-gray-300' : 'text-gray-600'
-        }`}>Tech Enthusiast</h2>
+        }`}>Tech Enthusiast </h2>
         <p className={`max-w-2xl text-lg md:text-xl mb-6 ${
           isDark ? 'text-gray-400' : 'text-gray-500'
         }`}>Feel free to check out my portfolio and experience!</p>
       </section>
 
       {/* Apps Section - Cool Bubbles */}
-      <section id="apps" className="py-10 px-4 max-w-6xl mx-auto">
+      <section id="apps" className="py-10 px-4 max-w-6xl mx-auto mb-12">
         <h3 className={`text-3xl font-bold mb-12 text-center ${
           isDark ? 'text-white' : 'text-gray-900'
         }`}>Applications</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 justify-items-center">
           {/* PingChat App */}
           <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-            onClick={handleViewMessaging}
+            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300 opacity-60"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-600/50 transition-all duration-300">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-700 to-gray-800 rounded-full flex items-center justify-center">
-                <span className="text-2xl md:text-3xl">💬</span>
+            <div className={`absolute inset-0 rounded-full shadow-lg transition-all duration-300 ${
+              isDark
+                ? 'bg-gradient-to-br from-gray-600 to-gray-700'
+                : 'bg-white border-2 border-gray-300 shadow-gray-400/20'
+            }`}>
+              <div className={`absolute inset-2 rounded-full flex items-center justify-center ${
+                isDark
+                  ? 'bg-gradient-to-br from-gray-700 to-gray-800'
+                  : 'bg-gradient-to-br from-gray-50 to-gray-100'
+              }`}>
+                <span className={`text-xs md:text-sm font-bold text-center px-2 ${
+                  isDark ? 'text-white' : 'text-gray-900'
+                }`}>PingChat</span>
               </div>
             </div>
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <span className="text-sm font-semibold text-white group-hover:text-gray-300 transition-colors">PingChat</span>
-            </div>
-            {/* Hover effect overlay */}
-            <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Login prompt tooltip for non-authenticated users */}
-            {!username && (
-              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10 shadow-lg">
-                <div className="text-center">
-                  <div className="font-semibold">🔐 Login Required</div>
-                  <div className="text-gray-300">Register or login to start chatting</div>
-                </div>
-                {/* Tooltip arrow */}
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+            {/* Maintenance tooltip */}
+            <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10 shadow-lg">
+              <div className="text-center">
+                <div className="font-semibold">🚧 Temporarily Unavailable</div>
+                <div className="text-gray-300">Backend maintenance in progress</div>
               </div>
-            )}
+              {/* Tooltip arrow */}
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+            </div>
           </div>
 
           {/* Siphon Demo App */}
@@ -187,13 +188,20 @@ export default function Landing() {
             className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
             onClick={() => navigate('/siphon')}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-500/50 transition-all duration-300">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center">
-                <span className="text-2xl md:text-3xl">🌊</span>
+            <div className={`absolute inset-0 rounded-full shadow-lg transition-all duration-300 ${
+              isDark
+                ? 'bg-gradient-to-br from-gray-600 to-gray-700 group-hover:shadow-3xl group-hover:shadow-gray-600/50'
+                : 'bg-white border-2 border-gray-300 shadow-gray-400/20 group-hover:shadow-3xl group-hover:shadow-gray-400/50'
+            }`}>
+              <div className={`absolute inset-2 rounded-full flex items-center justify-center ${
+                isDark
+                  ? 'bg-gradient-to-br from-gray-700 to-gray-800'
+                  : 'bg-gradient-to-br from-gray-50 to-gray-100'
+              }`}>
+                <span className={`text-xs md:text-sm font-bold text-center px-2 ${
+                  isDark ? 'text-white' : 'text-gray-900'
+                }`}>Siphon</span>
               </div>
-            </div>
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <span className="text-sm font-semibold text-white group-hover:text-gray-300 transition-colors">Siphon Demo</span>
             </div>
             {/* Hover effect overlay */}
             <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -204,13 +212,20 @@ export default function Landing() {
             className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
             onClick={() => navigate('/news')}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full shadow-lg group-hover:shadow-2xl group-hover:shadow-gray-400/50 transition-all duration-300">
-              <div className="absolute inset-2 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full flex items-center justify-center">
-                <span className="text-2xl md:text-3xl">📰</span>
+            <div className={`absolute inset-0 rounded-full shadow-lg transition-all duration-300 ${
+              isDark
+                ? 'bg-gradient-to-br from-gray-600 to-gray-700 group-hover:shadow-3xl group-hover:shadow-gray-600/50'
+                : 'bg-white border-2 border-gray-300 shadow-gray-400/20 group-hover:shadow-3xl group-hover:shadow-gray-400/50'
+            }`}>
+              <div className={`absolute inset-2 rounded-full flex items-center justify-center ${
+                isDark
+                  ? 'bg-gradient-to-br from-gray-700 to-gray-800'
+                  : 'bg-gradient-to-br from-gray-50 to-gray-100'
+              }`}>
+                <span className={`text-xs md:text-sm font-bold text-center px-2 ${
+                  isDark ? 'text-white' : 'text-gray-900'
+                }`}>News</span>
               </div>
-            </div>
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <span className="text-sm font-semibold text-white group-hover:text-gray-300 transition-colors">News App</span>
             </div>
             {/* Hover effect overlay */}
             <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -231,8 +246,12 @@ export default function Landing() {
               ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
               : 'bg-white border-gray-200 hover:border-gray-300'
           }`}>
-            <h4 className="text-xl font-semibold mb-2 text-white">JMW Portfolio & RSA Messaging App</h4>
-            <p className="mb-4 text-gray-400 text-sm flex-grow">A student portfolio 
+            <h4 className={`text-xl font-semibold mb-2 ${
+              isDark ? 'text-white' : 'text-gray-900'
+            }`}>JMW Portfolio & RSA Messaging App</h4>
+            <p className={`mb-4 text-sm flex-grow ${
+              isDark ? 'text-gray-400' : 'text-gray-600'
+            }`}>A student portfolio 
               featuring this website and a secure RSA messaging service. Built with React frontend, Java Spring Boot backend, PostgreSQL database, and deployed on Railway. 
               Includes JWT authentication, RSA encryption, and fun UI effects.</p>
             <div className="flex flex-col gap-2 mt-auto">
@@ -265,8 +284,12 @@ export default function Landing() {
               ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
               : 'bg-white border-gray-200 hover:border-gray-300'
           }`}>
-            <h4 className="text-xl font-semibold mb-2 text-white">Bouncing Balls</h4>
-            <p className="mb-4 text-gray-400 text-sm flex-grow">An interactive 2D physics game involving shooting balls at targets. Uses fun, realistic physics animations.
+            <h4 className={`text-xl font-semibold mb-2 ${
+              isDark ? 'text-white' : 'text-gray-900'
+            }`}>Bouncing Balls</h4>
+            <p className={`mb-4 text-sm flex-grow ${
+              isDark ? 'text-gray-400' : 'text-gray-600'
+            }`}>An interactive 2D physics game involving shooting balls at targets. Uses fun, realistic physics animations.
               Built with Java for educational and entertainment purposes.</p>
             <div className="flex flex-col gap-2 mt-auto">
               <a 
@@ -295,8 +318,12 @@ export default function Landing() {
               ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
               : 'bg-white border-gray-200 hover:border-gray-300'
           }`}>
-            <h4 className="text-xl font-semibold mb-2 text-white">Financial Data Analysis</h4>
-            <p className="mb-4 text-gray-400 text-sm flex-grow">Financial data analysis project using machine learning to extract meaningful insights from 
+            <h4 className={`text-xl font-semibold mb-2 ${
+              isDark ? 'text-white' : 'text-gray-900'
+            }`}>Financial Data Analysis</h4>
+            <p className={`mb-4 text-sm flex-grow ${
+              isDark ? 'text-gray-400' : 'text-gray-600'
+            }`}>Financial data analysis project using machine learning to extract meaningful insights from 
               financial datasets. Includes data visualization and predictive modeling.</p>
             <div className="flex flex-col gap-2 mt-auto">
               <a 
@@ -326,8 +353,12 @@ export default function Landing() {
               ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
               : 'bg-white border-gray-200 hover:border-gray-300'
           }`}>
-            <h4 className="text-xl font-semibold mb-2 text-white">Prescient Coding Challenge 2025</h4>
-            <p className="mb-4 text-gray-400 text-sm flex-grow">One of two solutions presented by team DualBoot at the Prescient Investment Management coding challenge 2025.</p>
+            <h4 className={`text-xl font-semibold mb-2 ${
+              isDark ? 'text-white' : 'text-gray-900'
+            }`}>Prescient Coding Challenge 2025</h4>
+            <p className={`mb-4 text-sm flex-grow ${
+              isDark ? 'text-gray-400' : 'text-gray-600'
+            }`}>One of two solutions presented by team DualBoot at the Prescient Investment Management coding challenge 2025.</p>
             <div className="flex flex-col gap-2 mt-auto">
               <a 
                 href="https://github.com/Jordy-Ward/prescient-coding-challenge-2025" 
@@ -355,9 +386,17 @@ export default function Landing() {
 
       {/* CV/Resume */}
       <section id="cv" className="py-16 px-4 max-w-4xl mx-auto">
-        <h3 className="text-3xl font-bold mb-8 text-white">CV / Resume</h3>
-        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-gray-600 transition-all">
-          <ul className="list-disc list-inside text-lg text-gray-400 space-y-2 mb-6">
+        <h3 className={`text-3xl font-bold mb-8 ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>CV / Resume</h3>
+        <div className={`rounded-xl p-6 shadow-lg border transition-all ${
+          isDark
+            ? 'bg-white/5 border-gray-700 hover:border-gray-600'
+            : 'bg-white border-gray-200 hover:border-gray-300'
+        }`}>
+          <ul className={`list-disc list-inside text-lg space-y-2 mb-6 ${
+            isDark ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch</li>
             <li>BSc Honours in Computer Science (2026-present)</li>
             <li>Participated in the {''}
@@ -365,7 +404,11 @@ export default function Landing() {
                 href="https://www.prescient.co.za/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white underline decoration-gray-500 hover:decoration-white transition-colors"
+                className={`hover:text-white underline transition-colors ${
+                  isDark
+                    ? 'text-gray-300 decoration-gray-500 hover:decoration-white'
+                    : 'text-gray-700 decoration-gray-400 hover:decoration-gray-900'
+                }`}
               >
                 Prescient Investment Management
               </a>
@@ -375,10 +418,10 @@ export default function Landing() {
             <li>Lifeguard for Gwaing and Wilderness beaches, Garden Route (2018-2021)</li>
           </ul>
           
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => window.open('/JordanWardCV.pdf', '_blank')}
-              className={`px-6 py-2 rounded-lg font-semibold transition shadow-md flex items-center gap-2 ${
+              className={`w-full sm:w-auto px-6 py-3 rounded-lg font-semibold transition shadow-md flex items-center justify-center gap-2 ${
                 isDark 
                   ? 'bg-gray-700 text-white hover:bg-gray-600' 
                   : 'bg-white text-black hover:bg-gray-200'
@@ -392,7 +435,7 @@ export default function Landing() {
             </button>
             <button 
               onClick={handleDownloadCV}
-              className={`px-6 py-2 rounded-lg font-semibold transition shadow-md flex items-center gap-2 ${
+              className={`w-full sm:w-auto px-6 py-3 rounded-lg font-semibold transition shadow-md flex items-center justify-center gap-2 ${
                 isDark 
                   ? 'bg-gray-700 text-white hover:bg-gray-600' 
                   : 'bg-white text-black hover:bg-gray-200'
@@ -409,9 +452,17 @@ export default function Landing() {
 
       {/* Education */}
       <section id="education" className="py-16 px-4 max-w-4xl mx-auto">
-        <h3 className="text-3xl font-bold mb-8 text-white">Education</h3>
-        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-gray-600 transition-all">
-          <ul className="list-disc list-inside text-lg text-gray-400 space-y-2">
+        <h3 className={`text-3xl font-bold mb-8 ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>Education</h3>
+        <div className={`rounded-xl p-6 shadow-lg border transition-all ${
+          isDark
+            ? 'bg-white/5 border-gray-700 hover:border-gray-600'
+            : 'bg-white border-gray-200 hover:border-gray-300'
+        }`}>
+          <ul className={`list-disc list-inside text-lg space-y-2 ${
+            isDark ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             <li>Graduated from Glenwood House highschool (2020)</li>
             <li>Graduated from Stellenbosch University, BSc Computer Science and Applied Mathematics (2025)</li>
             <li>Honours in Computer Science, Stellenbosch University (2026)</li>
@@ -428,7 +479,7 @@ export default function Landing() {
           {/* Horizontal Scrolling Gallery */}
           <div className="relative overflow-hidden">
             <div className="flex animate-scroll space-x-6">
-              {duplicatedPhotos.map((photo, index) => (
+              {duplicatedPhotos.map((photo, index) => ( /*Entire div slides across. Div contains all photos */
                 <div key={index} className="flex-shrink-0 w-64 h-80">
                   <img 
                     src={photo} 
@@ -448,12 +499,28 @@ export default function Landing() {
 
       {/* Contact / Socials */}
       <section id="contact" className="py-16 px-4 max-w-4xl mx-auto">
-        <h3 className="text-3xl font-bold mb-8 text-white">Contact details</h3>
-        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-gray-600 transition-all flex flex-col items-center">
-          <p className="mb-4 text-lg text-gray-400">Feel free to reach out to connect and or collaborate!</p>
+        <h3 className={`text-3xl font-bold mb-8 ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>Contact details</h3>
+        <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col items-center ${
+          isDark
+            ? 'bg-white/5 border-gray-700 hover:border-gray-600'
+            : 'bg-white border-gray-200 hover:border-gray-300'
+        }`}>
+          <p className={`mb-4 text-lg ${
+            isDark ? 'text-gray-400' : 'text-gray-600'
+          }`}>Feel free to reach out to connect and or collaborate!</p>
           <div className="flex gap-6 mb-4">
-            <a href="mailto:jordyward041@gmail.com" className="text-gray-300 hover:text-white text-2xl"><i className="fas fa-envelope"></i> Email</a>
-            <a href="https://github.com/Jordy-Ward" className="text-gray-300 hover:text-white text-2xl" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i> GitHub</a>
+            <a href="mailto:jordyward041@gmail.com" className={`text-2xl transition-colors ${
+              isDark
+                ? 'text-gray-300 hover:text-white'
+                : 'text-gray-700 hover:text-gray-900'
+            }`}><i className="fas fa-envelope"></i> Email</a>
+            <a href="https://github.com/Jordy-Ward" className={`text-2xl transition-colors ${
+              isDark
+                ? 'text-gray-300 hover:text-white'
+                : 'text-gray-700 hover:text-gray-900'
+            }`} target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i> GitHub</a>
           </div>
         </div>
       </section>

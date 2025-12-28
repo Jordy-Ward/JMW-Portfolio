@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 const categories = [
     { id: 'tech', label: 'Tech' },
@@ -9,6 +10,8 @@ const categories = [
 ];
 
 export default function CategoryFilter({ selectedCategory, onCategoryChange }) {
+    const { isDark } = useTheme();
+    
     return (
         <div className="mb-8">
             {/* Horizontal scroll for categories */}
@@ -20,8 +23,12 @@ export default function CategoryFilter({ selectedCategory, onCategoryChange }) {
                             onClick={() => onCategoryChange(category.id)}
                             className={`px-5 py-2.5 rounded-full border-2 transition-all duration-200 flex items-center gap-2 whitespace-nowrap font-medium ${
                                 selectedCategory === category.id
-                                    ? 'bg-purple-600 border-purple-500 text-white shadow-lg scale-105'
-                                    : 'bg-transparent border-purple-700/50 text-gray-300 hover:bg-white/10 hover:border-purple-500 active:bg-white/20'
+                                    ? isDark
+                                        ? 'bg-gray-700 border-gray-600 text-white shadow-lg scale-105'
+                                        : 'bg-gray-900 border-gray-800 text-white shadow-lg scale-105'
+                                    : isDark
+                                        ? 'bg-transparent border-gray-600 text-gray-300 hover:bg-white/10 hover:border-gray-500 active:bg-white/20'
+                                        : 'bg-transparent border-gray-300 text-gray-700 hover:bg-gray-100 hover:border-gray-400 active:bg-gray-200'
                             }`}
                         >
                             <span className="text-lg">{category.emoji}</span>

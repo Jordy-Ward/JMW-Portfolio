@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -9,51 +9,11 @@ import NewsApp from './NewsApp';
 import BernoulliSiphon from './BernoulliSiphon';
 
 function App() {
-    const [showNotification, setShowNotification] = useState(false);
-
-    useEffect(() => {
-        // Check if user has already seen this notification
-        const hasSeenNotification = sessionStorage.getItem('hasSeenMaintenanceNotification');
-        
-        if (!hasSeenNotification) {
-            setShowNotification(true);
-        }
-    }, []);
-
-    const handleCloseNotification = () => {
-        setShowNotification(false);
-        sessionStorage.setItem('hasSeenMaintenanceNotification', 'true');
-    };
 
     return (
         <ThemeProvider>
             {/* AuthProvider wraps entire app to provide auth state to all components */}
             <AuthProvider>
-                {/* Maintenance Notification */}
-                {showNotification && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="text-2xl">🚧</span>
-                                <h2 className="text-lg font-bold text-gray-800">Backend Maintenance</h2>
-                            </div>
-                            <p className="text-gray-600 mb-4">
-                                Backend hosting is currently being updated. All backend functionality 
-                                (login, registration, messaging) is temporarily unavailable until further notice.
-                            </p>
-                            <p className="text-sm text-blue-600 mb-4">
-                                Portfolio features and demos remain fully functional.
-                            </p>
-                            <button
-                                onClick={handleCloseNotification}
-                                className="w-full px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded font-medium transition"
-                            >
-                                Got it!
-                            </button>
-                        </div>
-                    </div>
-                )}
-                
                 {/* Router enables navigation between different pages/routes */}
                 <Router>
                     <Routes>

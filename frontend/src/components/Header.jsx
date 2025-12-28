@@ -7,7 +7,7 @@ export default function Header({ username, jwt, onLogout, onNavigate, onGoHome, 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-colors ${
       isDark 
-        ? 'bg-gray-950/80 border-gray-800' 
+        ? 'bg-gray-900/80 border-gray-700' 
         : 'bg-white/80 border-gray-200'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -86,7 +86,7 @@ export default function Header({ username, jwt, onLogout, onNavigate, onGoHome, 
                   className={`px-4 py-2 rounded-lg transition-colors text-sm font-medium ${
                     isDark 
                       ? 'bg-gray-800 text-white hover:bg-gray-700' 
-                      : 'bg-gray-900 text-white hover:bg-gray-800'
+                      : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
                   }`}
                 >
                   Login
@@ -94,9 +94,9 @@ export default function Header({ username, jwt, onLogout, onNavigate, onGoHome, 
                 {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
-              className={`p-2 rounded-lg transition-colors ${
+              className={`p-2 rounded-lg transition-all duration-300 ${
                 isDark 
-                  ? 'bg-gray-800 hover:bg-gray-700 text-white-400' 
+                  ? 'bg-gray-800 hover:bg-gray-700 text-white' 
                   : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
               }`}
               aria-label="Toggle theme"

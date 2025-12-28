@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 //template to display a news article. Like a card format
 
@@ -7,6 +8,7 @@ import React from 'react';
 //on click is a function to call when the card is clicked
 //props are like function parameters
 export default function ArticleCard({ article, onClick }) { 
+    const { isDark } = useTheme();
 
     const getCategoryColor = (category) => {
         switch (category?.toLowerCase()) { //category? safely accesses the category. Wont crash if cat is null. Just return default
@@ -20,7 +22,7 @@ export default function ArticleCard({ article, onClick }) {
             case 'feel-good':
                 return 'bg-yellow-600';
             default:
-                return 'bg-purple-600';
+                return 'bg-gray-600';
         }
     };
 
@@ -31,11 +33,17 @@ export default function ArticleCard({ article, onClick }) {
 
     return (
         <div 
-            className="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-700/50 hover:border-purple-500 transition-all duration-300 cursor-pointer group active:scale-[0.98] shadow-xl hover:shadow-2xl hover:shadow-purple-500/20"
+            className={`backdrop-blur-sm rounded-2xl overflow-hidden border transition-all duration-300 cursor-pointer group active:scale-[0.98] shadow-xl ${
+                isDark
+                    ? 'bg-white/5 border-gray-700 hover:border-gray-600 hover:shadow-2xl hover:shadow-gray-800/50'
+                    : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-2xl hover:shadow-gray-200/50'
+            }`}
             onClick={() => onClick(article)}
         >
             {/* Large Image */}
-            <div className="relative w-full h-64 sm:h-80 overflow-hidden bg-gray-800">
+            <div className={`relative w-full h-64 sm:h-80 overflow-hidden ${
+                isDark ? 'bg-gray-800' : 'bg-gray-100'
+            }`}>
                 <img 
                     src={article.image || article.urlToImage || 'https://picsum.photos/800/600'} 
                     alt={article.title}
@@ -55,25 +63,39 @@ export default function ArticleCard({ article, onClick }) {
             {/* Content */}
             <div className="p-5 sm:p-6">
                 {/* Source and Time */}
-                <div className="flex items-center gap-2 text-gray-400 text-xs sm:text-sm mb-3">
+                <div className={`flex items-center gap-2 text-xs sm:text-sm mb-3 ${
+                    isDark ? 'text-gray-400' : 'text-gray-600'
+                }`}>
                     <span className="font-medium">{article.source?.name || article.source || 'Unknown'}</span>
                     <span>•</span>
                     <span>{formatTimeAgo(article.timeAgo || article.publishedAt)}</span>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 leading-tight group-hover:text-purple-300 transition-colors line-clamp-2">
+                <h3 className={`text-xl sm:text-2xl font-bold mb-3 leading-tight transition-colors line-clamp-2 ${
+                    isDark
+                        ? 'text-white group-hover:text-gray-300'
+                        : 'text-gray-900 group-hover:text-gray-700'
+                }`}>
                     {article.title || 'No title available'}
                 </h3>
 
                 {/* Description */}
-                <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-4 line-clamp-2">
+                <p className={`text-sm sm:text-base leading-relaxed mb-4 line-clamp-2 ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                }`}>
                     {article.description || 'No preview available...'}
                 </p>
 
                 {/* Simple CTA */}
-                <div className="pt-4 border-t border-purple-700/30">
-                    <span className="text-purple-400 font-semibold text-sm group-hover:text-purple-300 transition-colors">
+                <div className={`pt-4 border-t ${
+                    isDark ? 'border-gray-700' : 'border-gray-200'
+                }`}>
+                    <span className={`font-semibold text-sm transition-colors ${
+                        isDark
+                            ? 'text-gray-400 group-hover:text-gray-300'
+                            : 'text-gray-600 group-hover:text-gray-900'
+                    }`}>
                         Read Article →
                     </span>
                 </div>
