@@ -25,11 +25,11 @@ export default function Header({ onNavigate, onGoHome }) {
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="flex items-center space-x-4 md:space-x-8">
             {/* Navigation Links */}
             <button 
               onClick={() => onNavigate('projects')}
-              className={`transition-colors ${
+              className={`transition-colors text-sm md:text-base ${
                 isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -37,19 +37,17 @@ export default function Header({ onNavigate, onGoHome }) {
             </button>
             <button 
               onClick={() => onNavigate('contact')}
-              className={`transition-colors ${
+              className={`transition-colors text-sm md:text-base ${
                 isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
               }`}
             >
               Contact
             </button>
-          </nav>
-
-          {/* Theme Toggle */}
-          <div className="flex items-center space-x-4">
+            
+            {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className={`p-2 rounded-lg transition-all duration-300 ${
+              className={`p-2 rounded-lg transition-all duration-300 text-xs md:text-sm ${
                 isDark 
                   ? 'bg-gray-800 hover:bg-gray-700 text-white' 
                   : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
@@ -58,19 +56,7 @@ export default function Header({ onNavigate, onGoHome }) {
             >
               {isDark ? 'Light' : 'Dark'}
             </button>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => onNavigate('projects')}
-              className="text-gray-300 hover:text-white"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
+          </nav>
         </div>
       </div>
     </header>
