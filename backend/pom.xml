@@ -10,12 +10,12 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>rsa-web-app</artifactId>
+    <artifactId>jmw-portfolio</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>RSA Web Application</name>
-    <description>A web application for RSA encryption and key generation</description>
+    <name>JMW Portfolio</name>
+    <description>Jordan Ward's portfolio website</description>
 
     <properties>
         <java.version>11</java.version>
