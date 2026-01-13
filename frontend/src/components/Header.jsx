@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
-export default function Header({ username, jwt, onLogout, onNavigate, onGoHome, onLogin }) {
+export default function Header({ onNavigate, onGoHome }) {
   const { isDark, toggleTheme } = useTheme();
 
   return (
@@ -26,16 +26,6 @@ export default function Header({ username, jwt, onLogout, onNavigate, onGoHome, 
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {/* Apps Navigation */}
-            <button 
-              onClick={() => onNavigate('apps')}
-              className={`transition-colors ${
-                isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              Apps
-            </button>
-
             {/* Navigation Links */}
             <button 
               onClick={() => onNavigate('projects')}
@@ -55,43 +45,8 @@ export default function Header({ username, jwt, onLogout, onNavigate, onGoHome, 
             </button>
           </nav>
 
-          {/* User Status & Theme Toggle */}
+          {/* Theme Toggle */}
           <div className="flex items-center space-x-4">
-
-            {jwt ? (
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className={`text-sm font-medium ${
-                    isDark ? 'text-gray-300' : 'text-gray-700'
-                  }`}>{username}</span>
-                </div>
-                <button
-                  onClick={onLogout}
-                  className={`text-sm transition-colors ${
-                    isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-                  <span className="text-sm text-gray-400">Not signed in</span>
-                </div>
-                <button
-                  onClick={onLogin}
-                  className={`px-4 py-2 rounded-lg transition-colors text-sm font-medium ${
-                    isDark 
-                      ? 'bg-gray-800 text-white hover:bg-gray-700' 
-                      : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-                  }`}
-                >
-                  Login
-                </button>
-                {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
               className={`p-2 rounded-lg transition-all duration-300 ${
@@ -103,14 +58,12 @@ export default function Header({ username, jwt, onLogout, onNavigate, onGoHome, 
             >
               {isDark ? 'Light' : 'Dark'}
             </button>
-              </div>
-            )}
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
-              onClick={() => onNavigate('apps')}
+              onClick={() => onNavigate('projects')}
               className="text-gray-300 hover:text-white"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

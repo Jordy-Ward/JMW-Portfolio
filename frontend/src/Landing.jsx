@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from './contexts/AuthContext';
 import { useTheme } from './contexts/ThemeContext';
 import Header from './components/Header';
 
@@ -9,21 +8,7 @@ export default function Landing() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Auth context for authentication state and functions
-  const { username, jwt, logout } = useAuth();
   const { isDark } = useTheme();
-
-  // Function to handle navigation to messaging app
-  // Checks authentication and routes accordingly
-  const handleViewMessaging = () => {
-    if (jwt) {
-      // User is authenticated - go directly to messaging
-      navigate('/messaging');
-    } else {
-      // User not authenticated - go to login page with intended destination
-      navigate('/login', { state: { from: { pathname: '/messaging' } } });
-    }
-  };
 
   // Function to handle smooth scroll
   const scrollToSection = (sectionId) => {
@@ -126,12 +111,8 @@ export default function Landing() {
     }`}>
       {/* Header */}
         <Header 
-            username={username}
-            jwt={jwt}
-            onLogout={logout}
             onNavigate={scrollToSection}
             onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            onLogin={() => navigate('/login', { state: { from: location } })}
         />      {/* Hero/About Me */}
       <section className="flex flex-col items-center justify-center py-12 px-4 text-center pt-32 pb-8">{/* Reduced py-20 to py-12 and added pb-8 */}
         <img src="/landingPagePortrait.JPG" alt="Profile" className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-6 object-cover" />
@@ -144,94 +125,6 @@ export default function Landing() {
         <p className={`max-w-2xl text-lg md:text-xl mb-6 ${
           isDark ? 'text-gray-400' : 'text-gray-500'
         }`}>Feel free to check out my portfolio and experience!</p>
-      </section>
-
-      {/* Apps Section - Cool Bubbles */}
-      <section id="apps" className="py-10 px-4 max-w-6xl mx-auto mb-12">
-        <h3 className={`text-3xl font-bold mb-12 text-center ${
-          isDark ? 'text-white' : 'text-gray-900'
-        }`}>Applications</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 justify-items-center">
-          {/* PingChat App */}
-          <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-not-allowed transform transition-all duration-300 opacity-60"
-          >
-            <div className={`absolute inset-0 rounded-full shadow-lg transition-all duration-300 ${
-              isDark
-                ? 'bg-gradient-to-br from-gray-600 to-gray-700'
-                : 'bg-white border-2 border-gray-300 shadow-gray-400/20'
-            }`}>
-              <div className={`absolute inset-2 rounded-full flex items-center justify-center ${
-                isDark
-                  ? 'bg-gradient-to-br from-gray-700 to-gray-800'
-                  : 'bg-gradient-to-br from-gray-50 to-gray-100'
-              }`}>
-                <span className={`text-xs md:text-sm font-bold text-center px-2 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>PingChat</span>
-              </div>
-            </div>
-            
-            {/* Maintenance tooltip */}
-            <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10 shadow-lg">
-              <div className="text-center">
-                <div className="font-semibold">🚧 Temporarily Unavailable</div>
-                <div className="text-gray-300">Backend maintenance in progress</div>
-              </div>
-              {/* Tooltip arrow */}
-              <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
-            </div>
-          </div>
-
-          {/* Siphon Demo App */}
-          <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-            onClick={() => navigate('/siphon')}
-          >
-            <div className={`absolute inset-0 rounded-full shadow-lg transition-all duration-300 ${
-              isDark
-                ? 'bg-gradient-to-br from-gray-600 to-gray-700 group-hover:shadow-3xl group-hover:shadow-gray-600/50'
-                : 'bg-white border-2 border-gray-300 shadow-gray-400/20 group-hover:shadow-3xl group-hover:shadow-gray-400/50'
-            }`}>
-              <div className={`absolute inset-2 rounded-full flex items-center justify-center ${
-                isDark
-                  ? 'bg-gradient-to-br from-gray-700 to-gray-800'
-                  : 'bg-gradient-to-br from-gray-50 to-gray-100'
-              }`}>
-                <span className={`text-xs md:text-sm font-bold text-center px-2 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>Siphon</span>
-              </div>
-            </div>
-            {/* Hover effect overlay */}
-            <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-
-          {/* News App */}
-          <div 
-            className="group relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-            onClick={() => navigate('/news')}
-          >
-            <div className={`absolute inset-0 rounded-full shadow-lg transition-all duration-300 ${
-              isDark
-                ? 'bg-gradient-to-br from-gray-600 to-gray-700 group-hover:shadow-3xl group-hover:shadow-gray-600/50'
-                : 'bg-white border-2 border-gray-300 shadow-gray-400/20 group-hover:shadow-3xl group-hover:shadow-gray-400/50'
-            }`}>
-              <div className={`absolute inset-2 rounded-full flex items-center justify-center ${
-                isDark
-                  ? 'bg-gradient-to-br from-gray-700 to-gray-800'
-                  : 'bg-gradient-to-br from-gray-50 to-gray-100'
-              }`}>
-                <span className={`text-xs md:text-sm font-bold text-center px-2 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>News</span>
-              </div>
-            </div>
-            {/* Hover effect overlay */}
-            <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-        </div>
-
       </section>
 
       {/* Projects */}
