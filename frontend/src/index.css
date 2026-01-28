@@ -37,19 +37,8 @@ html, body {
   }
 }
 
-/* Horizontal Photo Scroll Animation */
-@keyframes scroll { /*creates a reusable animation named scroll*/
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-280px * 17)); /* 18 photos × (256px width + 24px gap) */
-  }
-}
-
-.animate-scroll {
-  animation: scroll 68s linear infinite; /* 17 photos × 4s each = 68s total */
-}
+/* Horizontal Photo Scroll Animation - Dynamic values now handled in component */
+/* Animation keyframes are dynamically generated based on photo count */
 
 /* Pause animation on hover */
 .animate-scroll:hover {

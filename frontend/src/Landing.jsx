@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from './contexts/ThemeContext';
 import Header from './components/Header';
+import { photoGallery, shuffleArray, getAnimationConfig } from './config/photos';
 
 export default function Landing() {
-  // Router navigation hook for programmatic navigation
   const navigate = useNavigate();
   const location = useLocation();
   
   const { isDark } = useTheme();
 
-  // Function to handle smooth scroll
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -21,87 +20,45 @@ export default function Landing() {
     }
   };
 
-  // Effect to handle navigation from other pages with scroll intent
   useEffect(() => {
     const scrollTo = location.state?.scrollTo;
     if (scrollTo) {
-      // Small delay to ensure page is fully rendered
       setTimeout(() => {
         scrollToSection(scrollTo);
       }, 100);
       
-      // Clear the state to prevent re-scrolling on re-renders
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location.state, location.pathname, navigate]);
 
-  // Function to handle CV download with mobile compatibility
   const handleDownloadCV = () => {
-    // Detect if user is on mobile device
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPad detection
+                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
     if (isMobile) {
-      // On mobile, open in new tab for better compatibility
       window.open('/JordanWardCV.pdf', '_blank');
     } else {
-      // On desktop, try download first, fallback to opening in new tab
       try {
         const link = document.createElement('a');
         link.href = '/JordanWardCV.pdf';
         link.download = 'Jordan_Ward_CV.pdf';
         
-        // Test if download attribute is supported
         if (link.download !== undefined) {
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
         } else {
-          // Fallback to opening in new tab
           window.open('/JordanWardCV.pdf', '_blank');
         }
       } catch (error) {
-        // Fallback to opening in new tab
         window.open('/JordanWardCV.pdf', '_blank');
       }
     }
   };
-  // Photo carousel state - no longer needed for horizontal scroll
-  
-  // Shuffle function to randomize array
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-  
-  // Add your photos here - replace with your actual image filenames
-  const photos = [
-    "/family.jpeg",
-    "/guitar.jpeg", 
-    "/hackathon.jpeg",
-    "/paintball.jpeg",
-    "/georgia.jpeg",
-    "/tank.jpeg",
-    "/luke.jpeg",
-    "/daddas.jpeg",
-    "/flyingcat.jpeg",
-    "/sleepytank.jpeg",
-    "/GeorgiaVicGrad.jpg",
-    "/gradFamBib.jpg",
-    "/GrayMichJoshGrad.jpg",
-    "/joGrad.jpg",
-    "/rhysSunset.jpg",
-    "/overheadPress.jpg",
-    "/gymPose.jpg"
-  ];
-  
-  // Randomize photos and duplicate for seamless loop
-  const [randomizedPhotos] = useState(() => shuffleArray(photos));
+
+  const [randomizedPhotos] = useState(() => shuffleArray(photoGallery));
   const duplicatedPhotos = [...randomizedPhotos, ...randomizedPhotos];
+  const animationConfig = getAnimationConfig(photoGallery.length);
 
   return (
     <div className={`min-h-screen font-sans transition-colors ${
@@ -109,12 +66,11 @@ export default function Landing() {
         ? 'bg-gradient-to-br from-gray-800 to-black text-white' 
         : 'bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900'
     }`}>
-      {/* Header */}
-        <Header 
+      <Header 
             onNavigate={scrollToSection}
             onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        />      {/* Hero/About Me */}
-      <section className="flex flex-col items-center justify-center py-12 px-4 text-center pt-32 pb-8">{/* Reduced py-20 to py-12 and added pb-8 */}
+        />
+      <section className="flex flex-col items-center justify-center py-12 px-4 text-center pt-32 pb-8">
         <img src="/landingPagePortrait.JPG" alt="Profile" className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-6 object-cover" />
         <h1 className={`text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg ${
           isDark ? 'text-white' : 'text-gray-900'
@@ -127,13 +83,11 @@ export default function Landing() {
         }`}>Feel free to check out my portfolio and experience!</p>
       </section>
 
-      {/* Projects */}
-      <section id="projects" className="py-10 px-4 max-w-6xl mx-auto">{/* Reduced py-16 to py-12 */}
+      <section id="projects" className="py-10 px-4 max-w-6xl mx-auto">
         <h3 className={`text-3xl font-bold mb-8 ${
           isDark ? 'text-white' : 'text-gray-900'
         }`}>Projects</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* JMW Portfolio - Main Project */}
           <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
             isDark 
               ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
@@ -171,7 +125,6 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* Bouncing Balls */}
           <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
             isDark 
               ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
@@ -205,7 +158,6 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* Financial Data Analysis */}
           <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
             isDark 
               ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
@@ -240,7 +192,6 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* Prescient Coding Challenge */}
           <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col h-full ${
             isDark 
               ? 'bg-white/5 border-gray-700 hover:border-gray-600' 
@@ -277,7 +228,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* CV/Resume */}
       <section id="cv" className="py-16 px-4 max-w-4xl mx-auto">
         <h3 className={`text-3xl font-bold mb-8 ${
           isDark ? 'text-white' : 'text-gray-900'
@@ -343,7 +293,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Education */}
       <section id="education" className="py-16 px-4 max-w-4xl mx-auto">
         <h3 className={`text-3xl font-bold mb-8 ${
           isDark ? 'text-white' : 'text-gray-900'
@@ -359,28 +308,34 @@ export default function Landing() {
             <li>Graduated from Glenwood House highschool (2020)</li>
             <li>Graduated from Stellenbosch University, BSc Computer Science and Applied Mathematics (2025)</li>
             <li>Honours in Computer Science, Stellenbosch University (2026)</li>
-            {/* Add more education here */}
           </ul>
         </div>
       </section>
 
-      {/* Life Outside the Office */}
       <section id="life-outside" className="py-20 px-4 max-w-6xl mx-auto">
         <h3 className="text-3xl font-bold mb-8 text-white">More of me</h3>
         <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 overflow-hidden">
-          
-          {/* Horizontal Scrolling Gallery */}
           <div className="relative overflow-hidden">
+            <style>{`
+              .animate-scroll {
+                animation: scroll ${animationConfig.duration}s linear infinite;
+              }
+              @keyframes scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-${animationConfig.totalWidth}px); }
+              }
+            `}</style>
             <div className="flex animate-scroll space-x-6">
-              {duplicatedPhotos.map((photo, index) => ( /*Entire div slides across. Div contains all photos */
-                <div key={index} className="flex-shrink-0 w-64 h-80">
+              {duplicatedPhotos.map((photo, index) => (
+                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-64 h-80">
                   <img 
-                    src={photo} 
-                    alt={`Life moment ${(index % photos.length) + 1}`}
+                    src={photo.src} 
+                    alt="Photo"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
-                      // Fallback if image doesn't exist
-                      e.target.src = "https://via.placeholder.com/256x320/8B5CF6/FFFFFF?text=Add+Your+Photo";
+                      e.target.src = "https://via.placeholder.com/256x320/8B5CF6/FFFFFF?text=Photo+Unavailable";
                     }}
                   />
                 </div>
@@ -390,7 +345,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Contact / Socials */}
       <section id="contact" className="py-16 px-4 max-w-4xl mx-auto">
         <h3 className={`text-3xl font-bold mb-8 ${
           isDark ? 'text-white' : 'text-gray-900'
@@ -404,7 +358,7 @@ export default function Landing() {
             isDark ? 'text-gray-400' : 'text-gray-600'
           }`}>Feel free to reach out to connect and or collaborate!</p>
           <div className="flex gap-6 mb-4">
-            <a href="mailto:jordyward041@gmail.com" className={`text-2xl transition-colors ${
+            <a href="mailto:jordanward041@gmail.com" className={`text-2xl transition-colors ${
               isDark
                 ? 'text-gray-300 hover:text-white'
                 : 'text-gray-700 hover:text-gray-900'
