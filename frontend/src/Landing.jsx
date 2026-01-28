@@ -60,6 +60,19 @@ export default function Landing() {
   const duplicatedPhotos = [...randomizedPhotos, ...randomizedPhotos];
   const animationConfig = getAnimationConfig(photoGallery.length);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className={`min-h-screen font-sans transition-colors ${
       isDark 
@@ -315,7 +328,7 @@ export default function Landing() {
       <section id="life-outside" className="py-20 px-4 max-w-6xl mx-auto">
         <h3 className="text-3xl font-bold mb-8 text-white">More of me</h3>
         <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 overflow-hidden">
-          <div className="relative overflow-hidden">
+          {!isMobile && (
             <style>{`
               .animate-scroll {
                 animation: scroll ${animationConfig.duration}s linear infinite;
@@ -325,15 +338,17 @@ export default function Landing() {
                 100% { transform: translateX(-${animationConfig.totalWidth}px); }
               }
             `}</style>
-            <div className="flex animate-scroll space-x-6">
-              {duplicatedPhotos.map((photo, index) => (
-                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-64 h-80">
+          )}
+          <div className={isMobile ? "overflow-x-auto pb-4" : "relative overflow-hidden"}>
+            <div className={`flex space-x-4 md:space-x-6 ${isMobile ? '' : 'animate-scroll'}`}>
+              {(isMobile ? randomizedPhotos : duplicatedPhotos).map((photo, index) => (
+                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-48 h-64 md:w-64 md:h-80">
                   <img 
                     src={photo.src} 
                     alt="Photo"
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-transform duration-300"
                     onError={(e) => {
                       e.target.src = "https://via.placeholder.com/256x320/8B5CF6/FFFFFF?text=Photo+Unavailable";
                     }}
