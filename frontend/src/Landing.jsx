@@ -339,16 +339,17 @@ export default function Landing() {
               }
             `}</style>
           )}
-          <div className={isMobile ? "overflow-x-auto pb-4" : "relative overflow-hidden"}>
-            <div className={`flex space-x-4 md:space-x-6 ${isMobile ? '' : 'animate-scroll'}`}>
+          <div className={isMobile ? "overflow-x-auto overflow-y-hidden pb-4 -mx-6 px-6" : "relative overflow-hidden"}>
+            <div className={`flex space-x-4 md:space-x-6 ${isMobile ? '' : 'animate-scroll'}`} style={isMobile ? { touchAction: 'pan-x' } : {}}>
               {(isMobile ? randomizedPhotos : duplicatedPhotos).map((photo, index) => (
-                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-48 h-64 md:w-64 md:h-80">
+                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-48 h-64 md:w-64 md:h-80" style={isMobile ? { userSelect: 'none' } : {}}>
                   <img 
                     src={photo.src} 
                     alt="Photo"
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-transform duration-300"
+                    draggable="false"
                     onError={(e) => {
                       e.target.src = "https://via.placeholder.com/256x320/8B5CF6/FFFFFF?text=Photo+Unavailable";
                     }}
