@@ -342,13 +342,13 @@ export default function Landing() {
           <div className={isMobile ? "overflow-x-auto pb-4" : "relative overflow-hidden"}>
             <div className={`flex space-x-4 md:space-x-6 ${isMobile ? '' : 'animate-scroll'}`}>
               {(isMobile ? randomizedPhotos : duplicatedPhotos).map((photo, index) => (
-                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-48 h-64 md:w-64 md:h-80">
+                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-64 h-80 md:w-64 md:h-80">
                   <img 
                     src={photo.src} 
                     alt=""
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover rounded-lg shadow-lg hover:scale-105 active:scale-95 transition-transform duration-300"
+                    className={`w-full h-full object-cover rounded-lg shadow-lg transition-transform duration-300 ${isMobile ? '' : 'hover:scale-105'}`}
                     onError={(e) => {
                       e.target.src = "https://via.placeholder.com/256x320/8B5CF6/FFFFFF?text=Photo+Unavailable";
                     }}
