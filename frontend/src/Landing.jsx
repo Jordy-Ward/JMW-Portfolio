@@ -326,7 +326,9 @@ export default function Landing() {
       </section>
 
       <section id="life-outside" className="py-20 px-4 max-w-6xl mx-auto">
-        <h3 className="text-3xl font-bold mb-8 text-white">More of me</h3>
+        <h3 className={`text-3xl font-bold mb-8 ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>More of me</h3>
         <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 overflow-hidden">
           {!isMobile && (
             <style>{`
