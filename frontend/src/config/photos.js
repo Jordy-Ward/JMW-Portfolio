@@ -4,14 +4,13 @@ export const photoGallery = [
   { id: 2, src: "/hackathon.jpeg" },
   { id: 3, src: "/georgia.jpeg" },
   { id: 4, src: "/daddas.jpeg" },
-  { id: 5, src: "/flyingcat.jpeg" },
-  { id: 6, src: "/GeorgiaVicGrad.jpg" },
-  { id: 7, src: "/gradFamBib.jpg" },
-  { id: 8, src: "/GrayMichJoshGrad.jpg" },
-  { id: 9, src: "/joGrad.jpg" },
-  { id: 10, src: "/rhysSunset.jpg" },
-  { id: 11, src: "/overheadPress.jpg" },
-  { id: 12, src: "/gymPose.jpg" }
+  { id: 5, src: "/GeorgiaVicGrad.jpg" },
+  { id: 6, src: "/gradFamBib.jpg" },
+  { id: 7, src: "/GrayMichJoshGrad.jpg" },
+  { id: 8, src: "/joGrad.jpg" },
+  { id: 9, src: "/rhysSunset.jpg" },
+  { id: 10, src: "/overheadPress.jpg" },
+  { id: 11, src: "/gymPose.jpg" }
 ];
 
 // Helper function to shuffle array (Fisher-Yates algorithm)
