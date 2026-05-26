@@ -85,7 +85,7 @@ export default function Landing() {
         />
       <section className="flex flex-col items-center justify-center py-12 px-4 text-center pt-32 pb-8">
         <img src="/landingPagePortrait.JPG" alt="Profile" className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-6 object-cover" />
-        <h1 className={`text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg ${
+        <h1 className={`text-4xl md:text-5xl font-extrabold mb-0 drop-shadow-lg ${
           isDark ? 'text-white' : 'text-gray-900'
         }`}>Jordan Ward</h1>
         <p className={`max-w-2xl text-lg md:text-xl mb-6 ${
