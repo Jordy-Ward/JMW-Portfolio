@@ -90,7 +90,7 @@ export default function Landing() {
         }`}>Jordan Ward</h1>
         <p className={`max-w-2xl text-lg md:text-xl mb-6 ${
           isDark ? 'text-gray-400' : 'text-gray-500'
-        }`}>My portfolio</p>
+        }`}>Portfolio</p>
       </section>
 
 
