@@ -83,7 +83,7 @@ export default function Landing() {
             onNavigate={scrollToSection}
             onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         />
-      <section className="flex flex-col items-center justify-center py-12 px-4 text-center pt-32 pb-8">
+      <section className="flex flex-col items-center justify-center py-6 px-4 text-center pt-32 pb-8">
         <img src="/landingPagePortrait.JPG" alt="Profile" className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-6 object-cover" />
         <h1 className={`text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg ${
           isDark ? 'text-white' : 'text-gray-900'
@@ -94,7 +94,7 @@ export default function Landing() {
       </section>
 
 
-      <section id="cv" className="py-16 px-4 max-w-4xl mx-auto">
+      <section id="cv" className="py-8 px-4 max-w-4xl mx-auto">
         <h3 className={`text-3xl font-bold mb-8 ${
           isDark ? 'text-white' : 'text-gray-900'
         }`}>CV / Resume</h3>
@@ -159,7 +159,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section id="education" className="py-16 px-4 max-w-4xl mx-auto">
+      <section id="education" className="py-8 px-4 max-w-4xl mx-auto">
         <h3 className={`text-3xl font-bold mb-8 ${
           isDark ? 'text-white' : 'text-gray-900'
         }`}>Education</h3>
@@ -178,7 +178,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section id="life-outside" className="py-20 px-4 max-w-6xl mx-auto">
+      <section id="life-outside" className="py-10 px-4 max-w-6xl mx-auto">
         <h3 className={`text-3xl font-bold mb-8 ${
           isDark ? 'text-white' : 'text-gray-900'
         }`}>More of me</h3>
@@ -215,7 +215,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section id="contact" className="py-16 px-4 max-w-4xl mx-auto">
+      <section id="contact" className="py-8 px-4 max-w-4xl mx-auto">
         <h3 className={`text-3xl font-bold mb-8 ${
           isDark ? 'text-white' : 'text-gray-900'
         }`}>Contact details</h3>
