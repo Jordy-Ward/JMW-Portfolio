@@ -27,15 +27,7 @@ export default function Header({ onNavigate, onGoHome }) {
           {/* Navigation */}
           <nav className="flex items-center space-x-4 md:space-x-8">
             {/* Navigation Links */}
-            <button 
-              onClick={() => onNavigate('projects')}
-              className={`transition-colors text-sm md:text-base ${
-                isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              Projects
-            </button>
-            <button 
+<button 
               onClick={() => onNavigate('contact')}
               className={`transition-colors text-sm md:text-base ${
                 isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
