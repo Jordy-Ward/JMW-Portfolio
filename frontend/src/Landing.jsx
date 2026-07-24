@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from './contexts/ThemeContext';
 import Header from './components/Header';
-import { photoGallery, shuffleArray, getAnimationConfig } from './config/photos';
+import { photoGallery, shuffleArray, getScrollDuration, largeSrc, smallSrc, PHOTO_FALLBACK } from './config/photos';
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ export default function Landing() {
 
   const [randomizedPhotos] = useState(() => shuffleArray(photoGallery));
   const duplicatedPhotos = [...randomizedPhotos, ...randomizedPhotos];
-  const animationConfig = getAnimationConfig(photoGallery.length);
+  const scrollDuration = getScrollDuration(photoGallery.length);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -66,12 +66,28 @@ export default function Landing() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Honor the OS "reduce motion" setting; initialise synchronously to avoid a flash.
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () => typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = (e) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  // Non-animated, manually scrollable mode for touch devices and reduced-motion users.
+  const staticMode = isMobile || prefersReducedMotion;
 
   return (
     <div className={`min-h-screen font-sans transition-colors ${
@@ -84,13 +100,22 @@ export default function Landing() {
             onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         />
       <section className="flex flex-col items-center justify-center py-6 px-4 text-center pt-32 pb-8">
-        <img src="/landingPagePortrait.JPG" alt="Profile" className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-6 object-cover" />
+        <img
+          src={smallSrc('landingPagePortrait.webp')}
+          srcSet={`${smallSrc('landingPagePortrait.webp')} 1x, ${largeSrc('landingPagePortrait.webp')} 2x`}
+          alt="Portrait of Jordan Ward"
+          width="160"
+          height="160"
+          className="w-40 h-40 rounded-full border-4 border-white shadow-2xl mb-6 object-cover"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.srcset = '';
+            e.currentTarget.src = PHOTO_FALLBACK;
+          }}
+        />
         <h1 className={`text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg ${
           isDark ? 'text-white' : 'text-gray-900'
         }`}>Jordan Ward</h1>
-        <p className={`max-w-2xl text-lg md:text-xl mb-1 ${
-          isDark ? 'text-gray-400' : 'text-gray-500'
-        }`}>My portfolio</p>
       </section>
 
 
@@ -106,8 +131,9 @@ export default function Landing() {
           <ul className={`list-disc list-inside text-lg space-y-2 mb-6 ${
             isDark ? 'text-gray-400' : 'text-gray-600'
           }`}>
-            <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch</li>
-            <li>BSc Honours in Computer Science (2026-present)</li>
+            <li>Lifeguard for Gwaing and Wilderness beaches, Garden Route (2018-2021)</li>
+            <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch, (2025)</li>
+            <li>Waiter at Dorp Bar, Stellenbosch (2023-2025)</li>
             <li>Participated in the {''}
               <a 
                 href="https://www.prescient.co.za/"
@@ -123,8 +149,7 @@ export default function Landing() {
               </a>
               {' '}2025 Hackathon</li>
             <li>Tutor for Teach Me2 (2025-present)</li>
-            <li>Waiter at Dorp Bar, Stellenbosch (2023-2025)</li>
-            <li>Lifeguard for Gwaing and Wilderness beaches, Garden Route (2018-2021)</li>
+            <li>BSc Honours in Computer Science (2026-present)</li>
           </ul>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -183,29 +208,26 @@ export default function Landing() {
           isDark ? 'text-white' : 'text-gray-900'
         }`}>More of me</h3>
         <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 overflow-hidden">
-          {!isMobile && (
-            <style>{`
-              .animate-scroll {
-                animation: scroll ${animationConfig.duration}s linear infinite;
-              }
-              @keyframes scroll {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-${animationConfig.totalWidth}px); }
-              }
-            `}</style>
-          )}
-          <div className={isMobile ? "overflow-x-auto pb-4" : "relative overflow-hidden"}>
-            <div className={`flex space-x-4 md:space-x-6 ${isMobile ? '' : 'animate-scroll'}`}>
-              {(isMobile ? randomizedPhotos : duplicatedPhotos).map((photo, index) => (
-                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-64 h-80 md:w-64 md:h-80">
-                  <img 
-                    src={photo.src} 
+          <div className={staticMode ? "overflow-x-auto pb-4" : "relative overflow-hidden"}>
+            <div
+              className={`flex ${staticMode ? 'gap-4' : 'gap-6 w-max animate-scroll'}`}
+              style={staticMode ? undefined : { animationDuration: `${scrollDuration}s` }}
+            >
+              {(staticMode ? randomizedPhotos : duplicatedPhotos).map((photo, index) => (
+                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-64 h-80">
+                  <img
+                    src={largeSrc(photo.file)}
+                    srcSet={`${smallSrc(photo.file)} 1x, ${largeSrc(photo.file)} 2x`}
                     alt=""
                     loading="lazy"
                     decoding="async"
-                    className={`w-full h-full object-cover rounded-lg shadow-lg transition-transform duration-300 ${isMobile ? '' : 'hover:scale-105'}`}
+                    width="256"
+                    height="320"
+                    className={`w-full h-full object-cover rounded-lg shadow-lg transition-transform duration-300 ${staticMode ? '' : 'hover:scale-105'}`}
                     onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/256x320/8B5CF6/FFFFFF?text=Photo+Unavailable";
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.srcset = '';
+                      e.currentTarget.src = PHOTO_FALLBACK;
                     }}
                   />
                 </div>
@@ -226,7 +248,7 @@ export default function Landing() {
         }`}>
           <p className={`mb-4 text-lg ${
             isDark ? 'text-gray-400' : 'text-gray-600'
-          }`}>Feel free to reach out to connect and or collaborate!</p>
+          }`}>Reach out</p>
           <div className="flex gap-6 mb-4">
             <a href="mailto:jordanward041@gmail.com" className={`text-2xl transition-colors ${
               isDark

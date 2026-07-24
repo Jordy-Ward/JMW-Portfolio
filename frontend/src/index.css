@@ -37,12 +37,34 @@ html, body {
   }
 }
 
-/* Horizontal Photo Scroll Animation - Dynamic values now handled in component */
-/* Animation keyframes are dynamically generated based on photo count */
+/* Horizontal photo marquee.
+   The track (width: max-content) holds two identical copies of the photos and
+   shifts left by exactly one copy, so the keyframes are static and orientation-
+   agnostic. Only the duration is dynamic (scales with photo count, set inline). */
+.animate-scroll {
+  animation-name: scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 
-/* Pause animation on hover */
+@keyframes scroll {
+  from { transform: translateX(0); }
+  /* -0.75rem is half the 1.5rem (Tailwind gap-6) space between photos; it offsets
+     the half-gap that -50% leaves over, landing exactly one copy on for a seamless
+     loop. Keep this in sync with the animated track's gap in Landing.jsx. */
+  to { transform: translateX(calc(-50% - 0.75rem)); }
+}
+
+/* Pause on hover so a photo can be looked at. */
 .animate-scroll:hover {
   animation-play-state: paused;
+}
+
+/* Respect users who ask for reduced motion (JS also swaps to a scrollable strip). */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll {
+    animation: none;
+  }
 }
 
 /* Smooth horizontal scrolling for mobile */
