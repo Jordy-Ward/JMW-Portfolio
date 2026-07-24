@@ -7,7 +7,8 @@
     "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "optimize-images": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "axios": "^1.11.0",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
+    "sharp": "^0.35.3",
     "tailwindcss": "^3.4.1"
   },
   "proxy": "http://localhost:8080"
