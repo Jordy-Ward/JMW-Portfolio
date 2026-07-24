@@ -23,3 +23,15 @@ target/
 *.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+# Frontend build output
+frontend/build/
+
+# LaTeX build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+doc/cv.pdf
