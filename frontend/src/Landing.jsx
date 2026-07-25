@@ -150,6 +150,7 @@ export default function Landing() {
               {' '}2025 Hackathon</li>
             <li>Tutor for Teach Me2 (2025-present)</li>
             <li>BSc Honours in Computer Science (2026-present)</li>
+            <li>Teaching Assistant for third year Software Engineering 344, Stellenbosch University (2026-present)</li>
           </ul>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
