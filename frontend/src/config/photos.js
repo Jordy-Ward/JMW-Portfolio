@@ -13,9 +13,7 @@ export const photoGallery = [
   { id: 6, file: "gradFamBib.webp" },
   { id: 7, file: "GrayMichJoshGrad.webp" },
   { id: 8, file: "joGrad.webp" },
-  { id: 9, file: "rhysSunset.webp" },
-  { id: 10, file: "overheadPress.webp" },
-  { id: 11, file: "gymPose.webp" }
+  { id: 9, file: "rhysSunset.webp" }
 ];
 
 // Build the public URL for a photo file at each size.
