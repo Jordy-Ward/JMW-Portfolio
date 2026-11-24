@@ -119,71 +119,8 @@ export default function Landing() {
       </section>
 
 
-      <section id="cv" className="py-8 px-4 max-w-4xl mx-auto">
-        <h3 className={`text-3xl font-bold mb-8 ${
-          isDark ? 'text-white' : 'text-gray-900'
-        }`}>CV / Resume</h3>
-        <div className={`rounded-xl p-6 shadow-lg border transition-all ${
-          isDark
-            ? 'bg-white/5 border-gray-700 hover:border-gray-600'
-            : 'bg-white border-gray-200 hover:border-gray-300'
-        }`}>
-          <ul className={`list-disc list-inside text-lg space-y-2 mb-6 ${
-            isDark ? 'text-gray-400' : 'text-gray-600'
-          }`}>
-            <li>Lifeguard for Gwaing and Wilderness beaches, Garden Route (2018-2021)</li>
-            <li>BSc Computer Science and Applied Mathematics, University of Stellenbosch, (2025)</li>
-            <li>Waiter at Dorp Bar, Stellenbosch (2023-2025)</li>
-            <li>Participated in the {''}
-              <a 
-                href="https://www.prescient.co.za/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`hover:text-white underline transition-colors ${
-                  isDark
-                    ? 'text-gray-300 decoration-gray-500 hover:decoration-white'
-                    : 'text-gray-700 decoration-gray-400 hover:decoration-gray-900'
-                }`}
-              >
-                Prescient Investment Management
-              </a>
-              {' '}2025 Hackathon</li>
-            <li>Tutor for Teach Me2 (2025-present)</li>
-            <li>BSc Honours in Computer Science (2026-present)</li>
-            <li>Teaching Assistant for third year Software Engineering 344, Stellenbosch University (2026-present)</li>
-            <li>Participated in the Stellenbosch University Data School Hackathon, sponsored by Standard Bank (2026)</li>
-          </ul>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => window.open('/JordanWardCV.pdf', '_blank')}
-              className={`w-full sm:w-auto px-6 py-3 rounded-lg font-semibold transition shadow-md flex items-center justify-center gap-2 ${
-                isDark 
-                  ? 'bg-gray-700 text-white hover:bg-gray-600' 
-                  : 'bg-white text-black hover:bg-gray-200'
-              }`}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              View CV
-            </button>
-            <button 
-              onClick={handleDownloadCV}
-              className={`w-full sm:w-auto px-6 py-3 rounded-lg font-semibold transition shadow-md flex items-center justify-center gap-2 ${
-                isDark 
-                  ? 'bg-gray-700 text-white hover:bg-gray-600' 
-                  : 'bg-white text-black hover:bg-gray-200'
-              }`}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download CV
-            </button>
-          </div>
-        </div>
+      <section id="About" className="py-8 px-4 max-w-4xl mx-auto">
+        
       </section>
 
       <section id="education" className="py-8 px-4 max-w-4xl mx-auto">
@@ -200,7 +137,7 @@ export default function Landing() {
           }`}>
             <li>Graduated from Glenwood House highschool (2020)</li>
             <li>Graduated from Stellenbosch University, BSc Computer Science and Applied Mathematics (2025)</li>
-            <li>Honours in Computer Science, Stellenbosch University (2026)</li>
+            <li>Graduated from Stellenbosch University, BSc Honours Computer Science (2026)</li>
           </ul>
         </div>
       </section>
