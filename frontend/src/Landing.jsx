@@ -176,7 +176,6 @@ export default function Landing() {
       <section id="contact" className="py-8 px-4 max-w-4xl mx-auto">
         <h3 className="text-3xl font-bold mb-8 text-gray-900">Contact details</h3>
         <div className="rounded-xl p-6 shadow-lg border transition-all flex flex-col items-center bg-white border-gray-200 hover:border-gray-300">
-          <p className="mb-4 text-lg text-gray-600">Reach out</p>
           <div className="flex gap-6 mb-4">
             <a href="mailto:jordanward041@gmail.com" className="text-2xl transition-colors text-gray-700 hover:text-gray-900">Email</a>
             <a href="https://github.com/Jordy-Ward" className="text-2xl transition-colors text-gray-700 hover:text-gray-900" target="_blank" rel="noopener noreferrer">GitHub</a>
