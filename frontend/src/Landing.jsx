@@ -5,7 +5,7 @@ import { photoGallery, shuffleArray, getScrollDuration, largeSrc, smallSrc, PHOT
 
 // Files served from frontend/public
 const CV_PATH = '/JordanWardCV.pdf';
-const THESIS_PATH = '/Teaching_Tool_Interferometry.pdf';
+const THESIS_PATH = '/Teaching_Tool_Interferometry_JMWard_Honours_Thesis.pdf';
 
 export default function Landing() {
   const navigate = useNavigate();
