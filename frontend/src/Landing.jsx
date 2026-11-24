@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useTheme } from './contexts/ThemeContext';
 import Header from './components/Header';
 import { photoGallery, shuffleArray, getScrollDuration, largeSrc, smallSrc, PHOTO_FALLBACK } from './config/photos';
+
+// Files served from frontend/public
+const CV_PATH = '/JordanWardCV.pdf';
+const THESIS_PATH = '/Teaching_Tool_Interferometry.pdf';
 
 export default function Landing() {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const { isDark } = useTheme();
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -30,31 +31,6 @@ export default function Landing() {
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location.state, location.pathname, navigate]);
-
-  const handleDownloadCV = () => {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-    if (isMobile) {
-      window.open('/JordanWardCV.pdf', '_blank');
-    } else {
-      try {
-        const link = document.createElement('a');
-        link.href = '/JordanWardCV.pdf';
-        link.download = 'Jordan_Ward_CV.pdf';
-        
-        if (link.download !== undefined) {
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        } else {
-          window.open('/JordanWardCV.pdf', '_blank');
-        }
-      } catch (error) {
-        window.open('/JordanWardCV.pdf', '_blank');
-      }
-    }
-  };
 
   const [randomizedPhotos] = useState(() => shuffleArray(photoGallery));
   const duplicatedPhotos = [...randomizedPhotos, ...randomizedPhotos];
@@ -90,11 +66,7 @@ export default function Landing() {
   const staticMode = isMobile || prefersReducedMotion;
 
   return (
-    <div className={`min-h-screen font-sans transition-colors ${
-      isDark 
-        ? 'bg-gradient-to-br from-gray-800 to-black text-white' 
-        : 'bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900'
-    }`}>
+    <div className="min-h-screen font-sans bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900">
       <Header 
             onNavigate={scrollToSection}
             onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -113,28 +85,56 @@ export default function Landing() {
             e.currentTarget.src = PHOTO_FALLBACK;
           }}
         />
-        <h1 className={`text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg ${
-          isDark ? 'text-white' : 'text-gray-900'
-        }`}>Jordan Ward</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg text-gray-900">Jordan Ward</h1>
+        <div className="flex flex-wrap justify-center gap-3 mt-6">
+          <a
+            href={CV_PATH}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2.5 rounded-lg font-medium transition-colors bg-gray-900 text-white hover:bg-gray-700"
+          >
+            View CV
+          </a>
+          <a
+            href={CV_PATH}
+            download="Jordan_Ward_CV.pdf"
+            className="px-5 py-2.5 rounded-lg font-medium transition-colors border border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900"
+          >
+            Download CV
+          </a>
+          <a
+            href={THESIS_PATH}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2.5 rounded-lg font-medium transition-colors border border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:text-gray-900"
+          >
+            View Honours thesis
+          </a>
+        </div>
       </section>
 
 
-      <section id="About" className="py-8 px-4 max-w-4xl mx-auto">
-        
+      <section id="about" className="py-8 px-4 max-w-4xl mx-auto">
+        <h3 className="text-3xl font-bold mb-8 text-gray-900">
+          About me
+        </h3>
+          <div className="rounded-xl p-6 shadow-lg border transition-all bg-white border-gray-200 hover:border-gray-300 space-y-4 text-lg leading-relaxed text-gray-600">
+            <p>
+              I'm a Computer Science Honours graduate from Stellenbosch University with a
+              background in applied mathematics, software engineering and data science. I like  
+              building software that holds up at scale and working on scientific computing problems. I am looking to begin 
+              my career as a data  or software engineer, specifically working on backend systems. 
+
+              
+            </p>
+          </div>
+
       </section>
 
       <section id="education" className="py-8 px-4 max-w-4xl mx-auto">
-        <h3 className={`text-3xl font-bold mb-8 ${
-          isDark ? 'text-white' : 'text-gray-900'
-        }`}>Education</h3>
-        <div className={`rounded-xl p-6 shadow-lg border transition-all ${
-          isDark
-            ? 'bg-white/5 border-gray-700 hover:border-gray-600'
-            : 'bg-white border-gray-200 hover:border-gray-300'
-        }`}>
-          <ul className={`list-disc list-inside text-lg space-y-2 ${
-            isDark ? 'text-gray-400' : 'text-gray-600'
-          }`}>
+        <h3 className="text-3xl font-bold mb-8 text-gray-900">Education</h3>
+        <div className="rounded-xl p-6 shadow-lg border transition-all bg-white border-gray-200 hover:border-gray-300">
+          <ul className="list-disc list-inside text-lg space-y-2 text-gray-600">
             <li>Graduated from Glenwood House highschool (2020)</li>
             <li>Graduated from Stellenbosch University, BSc Computer Science and Applied Mathematics (2025)</li>
             <li>Graduated from Stellenbosch University, BSc Honours Computer Science (2026)</li>
@@ -143,7 +143,7 @@ export default function Landing() {
       </section>
 
       <section id="life-outside" className="py-10 px-4 max-w-6xl mx-auto">
-        <div className="bg-white/5 rounded-xl p-6 shadow-lg border border-gray-700 overflow-hidden">
+        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 overflow-hidden">
           <div className={staticMode ? "overflow-x-auto pb-4" : "relative overflow-hidden"}>
             <div
               className={`flex ${staticMode ? 'gap-4' : 'gap-6 w-max animate-scroll'}`}
@@ -174,28 +174,12 @@ export default function Landing() {
       </section>
 
       <section id="contact" className="py-8 px-4 max-w-4xl mx-auto">
-        <h3 className={`text-3xl font-bold mb-8 ${
-          isDark ? 'text-white' : 'text-gray-900'
-        }`}>Contact details</h3>
-        <div className={`rounded-xl p-6 shadow-lg border transition-all flex flex-col items-center ${
-          isDark
-            ? 'bg-white/5 border-gray-700 hover:border-gray-600'
-            : 'bg-white border-gray-200 hover:border-gray-300'
-        }`}>
-          <p className={`mb-4 text-lg ${
-            isDark ? 'text-gray-400' : 'text-gray-600'
-          }`}>Reach out</p>
+        <h3 className="text-3xl font-bold mb-8 text-gray-900">Contact details</h3>
+        <div className="rounded-xl p-6 shadow-lg border transition-all flex flex-col items-center bg-white border-gray-200 hover:border-gray-300">
+          <p className="mb-4 text-lg text-gray-600">Reach out</p>
           <div className="flex gap-6 mb-4">
-            <a href="mailto:jordanward041@gmail.com" className={`text-2xl transition-colors ${
-              isDark
-                ? 'text-gray-300 hover:text-white'
-                : 'text-gray-700 hover:text-gray-900'
-            }`}><i className="fas fa-envelope"></i> Email</a>
-            <a href="https://github.com/Jordy-Ward" className={`text-2xl transition-colors ${
-              isDark
-                ? 'text-gray-300 hover:text-white'
-                : 'text-gray-700 hover:text-gray-900'
-            }`} target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i> GitHub</a>
+            <a href="mailto:jordanward041@gmail.com" className="text-2xl transition-colors text-gray-700 hover:text-gray-900">Email</a>
+            <a href="https://github.com/Jordy-Ward" className="text-2xl transition-colors text-gray-700 hover:text-gray-900" target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
         </div>
       </section>
