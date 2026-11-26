@@ -122,10 +122,11 @@ export default function Landing() {
             <p>
               I'm a Computer Science Honours graduate from Stellenbosch University with a
               background in applied mathematics, software engineering and data science. I like  
-              building software that holds up at scale and working on scientific computing problems. I am looking to begin 
-              my career as a data  or software engineer, specifically working on backend systems. 
-
-              
+              building software that holds up at scale and working on scientific computing problems. I'm looking to begin 
+              my career as a data or software engineer, specifically working on backend systems. 
+            </p>
+            <p>
+              Outside of programming I love the ocean and working out.
             </p>
           </div>
 
@@ -135,9 +136,12 @@ export default function Landing() {
         <h3 className="text-3xl font-bold mb-8 text-gray-900">Education</h3>
         <div className="rounded-xl p-6 shadow-lg border transition-all bg-white border-gray-200 hover:border-gray-300">
           <ul className="list-disc list-inside text-lg space-y-2 text-gray-600">
-            <li>Graduated from Glenwood House highschool (2020)</li>
+            <li>
+              Graduated from Stellenbosch University, BSc Honours Computer Science,{' '}
+              <span className="font-semibold">Cum Laude</span> (2026)
+            </li>
             <li>Graduated from Stellenbosch University, BSc Computer Science and Applied Mathematics (2025)</li>
-            <li>Graduated from Stellenbosch University, BSc Honours Computer Science (2026)</li>
+            <li>Graduated from Glenwood House highschool (2020)</li>
           </ul>
         </div>
       </section>
