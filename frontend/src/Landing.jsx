@@ -121,7 +121,7 @@ export default function Landing() {
           <div className="rounded-xl p-6 shadow-lg border transition-all bg-white border-gray-200 hover:border-gray-300 space-y-4 text-lg leading-relaxed text-gray-600">
             <p>
               I'm a Computer Science Honours graduate from Stellenbosch University with a
-              background in applied mathematics, software engineering and data science. I like  
+              background in applied mathematics, software engineering, data science and machine learning. I like  
               building software that holds up at scale and working on scientific computing problems. I'm looking to begin 
               my career as a data or software engineer, specifically working on backend systems. 
             </p>
