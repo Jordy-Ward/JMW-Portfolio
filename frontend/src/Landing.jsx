@@ -154,16 +154,15 @@ export default function Landing() {
               style={staticMode ? undefined : { animationDuration: `${scrollDuration}s` }}
             >
               {(staticMode ? randomizedPhotos : duplicatedPhotos).map((photo, index) => (
-                <div key={`${photo.id}-${index}`} className="flex-shrink-0 w-64 h-80">
+                <div key={`${photo.id}-${index}`} className="flex-shrink-0 h-80">
                   <img
                     src={largeSrc(photo.file)}
                     srcSet={`${smallSrc(photo.file)} 1x, ${largeSrc(photo.file)} 2x`}
                     alt=""
                     loading="lazy"
                     decoding="async"
-                    width="256"
                     height="320"
-                    className={`w-full h-full object-cover rounded-lg shadow-lg transition-transform duration-300 ${staticMode ? '' : 'hover:scale-105'}`}
+                    className={`h-full w-auto max-w-none rounded-lg shadow-lg transition-transform duration-300 ${staticMode ? '' : 'hover:scale-105'}`}
                     onError={(e) => {
                       e.currentTarget.onerror = null;
                       e.currentTarget.srcset = '';
